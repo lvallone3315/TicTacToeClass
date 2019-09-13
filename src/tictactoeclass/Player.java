@@ -5,12 +5,40 @@
  */
 package tictactoeclass;
 
+import tictactoeclass.Board.Symbols;
+
 /**
- *
+ * Player class
+ *   Tracks players
+ *   Initially supports players name & symbol (text)
+ * 
+ *  getName()   returns player's name
+ *  setName()   stores player's name
  * @author leev
  */
 public class Player {
-    Player(char symbol) {
+    private String playerName = "Player ";
+    private Symbols playerSymbol;
+    
+    Player(Symbols symbol) {
+        playerSymbol = symbol;
+        playerName += symbol;
         System.out.println("Player constructor " + symbol);
+    }
+    
+    public String getPlayerName () {
+        return playerName;
+    }
+    
+    public void setPlayerName (String name) {
+        playerName = name;
+    }
+    
+    public Symbols getPlayerSymbol() {
+        return playerSymbol;
+    }
+    
+    public void printPlayer () {
+        System.out.println ("playerName: " + playerName);
     }
 }
