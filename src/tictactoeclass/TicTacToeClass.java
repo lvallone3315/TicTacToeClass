@@ -25,6 +25,10 @@ public class TicTacToeClass {
         Move move;
         
         System.out.println("Hello Tic Tac Toe");
+        
+        // test player class
+        Player playertest = new Player(Symbols.O);
+        playertest.playerTest();
 
         /*
          * Initialize classes & objects
@@ -43,7 +47,10 @@ public class TicTacToeClass {
         
         // declare & initialize next to player to make a move
         Player nextToPlay = player1;    // declare
-        // draw board
+        
+        for (int i = 0; i < 5; i++) {
+        // reset & draw board
+        board.resetBoard();
         ui.drawBoard(board);
             
         /**
@@ -70,7 +77,8 @@ public class TicTacToeClass {
         // get user move
 
             while (!board.isMoveValid(move = ui.getMove())) {
-                System.out.println("Invalid move");
+                // System.out.println("Invalid move");
+                ui.printUserError("Invalid move");
                 move.printMove();
             }
             move.printMove();  // for debugging
@@ -96,6 +104,7 @@ public class TicTacToeClass {
                 nextToPlay = player1;
             }
         }
+    }
     }
     
 }

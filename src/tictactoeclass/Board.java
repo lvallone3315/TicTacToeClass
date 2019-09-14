@@ -57,6 +57,7 @@ public class Board {
     
     public Boolean checkWinner(Move move, Symbols symbol) {
         int row, col;
+        // check row winner
         for (row = 0; row < 3; row++) {
             for (col = 0; col < 3; col++) {
                 if (boardArray[row][col] != symbol) {
@@ -67,6 +68,7 @@ public class Board {
                 return true;
             }
         }
+        // check column winner
         for (col = 0; col < 3; col++) {
             for (row = 0; row < 3; row++) {
                 if (boardArray[row][col] != symbol) {
@@ -76,6 +78,16 @@ public class Board {
             if (row == 3) {
                 return true;  // column winner
             }
+        }
+        if ((boardArray[0][0] == symbol)  &&
+                (boardArray[1][1] == symbol) &&
+                (boardArray[2][2] == symbol)) {
+            return true;
+        }
+        if ((boardArray[0][2] == symbol)  &&
+                (boardArray[1][1] == symbol) &&
+                (boardArray[2][0] == symbol)) {
+            return true;
         }
         return false;   // for now, need to check diags
     }

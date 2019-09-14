@@ -5,6 +5,8 @@
  */
 package tictactoeclass;
 
+import javax.swing.JOptionPane;
+
 import tictactoeclass.Board.Symbols;
 
 /**
@@ -14,6 +16,7 @@ import tictactoeclass.Board.Symbols;
  * 
  *  getName()   returns player's name
  *  setName()   stores player's name
+ *  getPlayerSymbol()   returns player's symbol as an enum(e.g. X or O)
  * @author leev
  */
 public class Player {
@@ -39,6 +42,22 @@ public class Player {
     }
     
     public void printPlayer () {
-        System.out.println ("playerName: " + playerName);
+        System.out.print ("playerName: " + this.getPlayerName());
+        System.out.println ("\tplayerSymbol " + this.getPlayerSymbol());
+    }
+    
+    /**
+     * playerTest() - test player class
+     * open up a dialog box, sets player name, prints to console
+     * continues until exit entered
+     */
+    public void playerTest() {
+        String name;
+        name = JOptionPane.showInputDialog("Enter player name.");
+        while (!name.equals("exit")) {
+            this.setPlayerName(name);
+            this.printPlayer();
+            name = JOptionPane.showInputDialog("Enter your name.");
+        }
     }
 }
