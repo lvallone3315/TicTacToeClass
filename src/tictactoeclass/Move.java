@@ -19,4 +19,8 @@ public class Move {
         row = r;
         column = c;
     }
+    
+    public void printMove() {
+        System.out.println("Row: "+ this.row + "\tColumn: " + this.column);
+    }
 }

@@ -39,5 +39,9 @@ public class TicTacToeUI {
         Move move = new Move(row,column);
         return move;
     }
+    
+    public void printUserError (String userError) {
+        System.out.println("USER ERROR: " + userError);
+    }
 }
 

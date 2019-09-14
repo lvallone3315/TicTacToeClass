@@ -5,6 +5,9 @@
  */
 package tictactoeclass;
 
+/**
+ * Symbols = enum for markers (ie X O and blank)
+ */
 import tictactoeclass.Board.Symbols;
 
 /**
@@ -15,46 +18,81 @@ public class TicTacToeClass {
 
     /**
      * @param args the command line arguments
+     * Currently: no command line arguments
      */
     public static void main(String[] args) {
-        Player nextToPlay;
+        
         Move move;
         
-        // TODO code application logic here
         System.out.println("Hello Tic Tac Toe");
+
+        /*
+         * Initialize classes & objects
+         *   Two players - X (player1) and O (player2)
+         *   Board (board)
+         *   GUI (ui)
+         */
         Player player1 = new Player(Symbols.X);
         Player player2 = new Player(Symbols.O);
+        Board board = new Board();
+        TicTacToeUI ui = new TicTacToeUI();
+          // some debugging info
         player1.printPlayer();
         player2.printPlayer();
-        Board board = new Board();
-        TicTacToeUI UI = new TicTacToeUI();
+
         
-        // variables: next to play
-        // init
-        nextToPlay = player1;
+        // declare & initialize next to player to make a move
+        Player nextToPlay = player1;    // declare
         // draw board
-        UI.drawBoard(board);
-        
-        for (int i = 0; i < 10; i++) {
+        ui.drawBoard(board);
             
+        /**
+         *           Play one game
+         * PreConditions: 
+         *    nextToPlay -> player who goes first
+         *    blank board displayed
+         * PostCondition:
+         *    Game outcome printed
+         *    nextToPlay -> player who did NOT make last move
+         * Until game is won, drew or reset
+         *    get a valid move
+         *    check if player won
+         *    if game over, print message
+         *    regardless, will switch players
+         *    
+         */
+            
+        Boolean gameOver = false;
+        int moveNumber = 0;
+                
+        while (!gameOver) {
+            moveNumber++;   // moves start at 1
         // get user move
-        while (!board.isMoveValid(move = UI.getMove())) {
-            System.out.println("Invalid move");
-        }
-        
-        // if box already occupied - try again
-        if (board.setBox(move.row,move.column, nextToPlay.getPlayerSymbol()) == -1) {
-            System.out.println("Box already occupied try again");
-            continue;
-        }
-        else {
-            UI.drawBoard(board);
-            // if valid move
-            //   check winner
-            //   if not a winner, switch players
+
+            while (!board.isMoveValid(move = ui.getMove())) {
+                System.out.println("Invalid move");
+                move.printMove();
+            }
+            move.printMove();  // for debugging
+
+            // log the move & draw the new board
+            board.setBox(move.row, move.column, nextToPlay.getPlayerSymbol());
+            ui.drawBoard(board);
+
+            // check if winner or draw
+            if (board.checkWinner (move,nextToPlay.getPlayerSymbol())) {
+                System.out.println("Winner: " + nextToPlay.getPlayerName());
+                gameOver = true;
+            }
+            else if (moveNumber == 9) {
+                System.out.println("Draw");
+                gameOver = true;
+            }
+
+            // switch players
             if (nextToPlay == player1)
                 nextToPlay = player2;
-            else
+            else {
                 nextToPlay = player1;
             }
         }

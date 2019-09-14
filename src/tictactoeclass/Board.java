@@ -36,15 +36,14 @@ public class Board {
     }
     
     // setBox (fow, column, symbol)  enters symbol into box
-    //                             return error (-1) if box already filled
+    // Assumes: box is empty (see isMoveValid, assert if not
     
-    public int setBox(int row, int column, Symbols symbol) {
+    public void setBox(int row, int column, Symbols symbol) {
         // validate row & column
-        if (boardArray[row][column] != Symbols.b)
-            return (-1);
-        else
-            boardArray[row][column] = symbol;
-        return (0);
+        assert (boardArray[row][column] != Symbols.b):
+            "setBox: box NOT empty" + "\trow: " + row + "\tcol: " + column;
+        // if no assert, valid move
+        boardArray[row][column] = symbol;
     }
     
     // resetBoard ()                 clears board
@@ -56,12 +55,43 @@ public class Board {
         }
     }
     
+    public Boolean checkWinner(Move move, Symbols symbol) {
+        int row, col;
+        for (row = 0; row < 3; row++) {
+            for (col = 0; col < 3; col++) {
+                if (boardArray[row][col] != symbol) {
+                    break;
+                }
+            }
+            if (col == 3) {  // means row winner
+                return true;
+            }
+        }
+        for (col = 0; col < 3; col++) {
+            for (row = 0; row < 3; row++) {
+                if (boardArray[row][col] != symbol) {
+                    break;
+                }
+            }
+            if (row == 3) {
+                return true;  // column winner
+            }
+        }
+        return false;   // for now, need to check diags
+    }
+    
     public Boolean isMoveValid(Move move) {
-        if ((move.row < 0) || (move.row > 2))
+        // valid row & column
+        if ((move.row < 0) || (move.row > 2)) {
             return false;
-        else if ((move.column < 0) || (move.column > 2))
+        }
+        else if ((move.column < 0) || (move.column > 2)) {
             return false;
-        else
-            return true;
+        }
+        // check if selected box is blank
+        if (boardArray[move.row][move.column] != Symbols.b) {
+            return false;
+        }
+        return true;
     }
 }
