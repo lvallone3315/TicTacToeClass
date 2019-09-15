@@ -24,6 +24,8 @@ public class TicTacToeClass {
         
         Move move;
         
+        ConsoleRedirect.setConsole();
+        
         System.out.println("Hello Tic Tac Toe");
         
         // test player class
@@ -105,9 +107,12 @@ public class TicTacToeClass {
             }
         }
     }
+    // System.exit(0);
     }
     
 }
+
+
 
 /**
  *   Board class
