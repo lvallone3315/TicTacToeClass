@@ -8,15 +8,14 @@ package tictactoeclass;
 /**
  * Symbols = enum for markers (ie X O and blank)
  */
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
+
 import tictactoeclass.Board.Symbols;
 
 /**
  *
  * @author leev
  */
-public class TicTacToeClass implements ActionListener {
+public class TicTacToeClass {
 
     /**
      * @param args the command line arguments
@@ -35,27 +34,17 @@ public class TicTacToeClass implements ActionListener {
         // playertest.playerTest();
 
         /*
-         * Initialize classes & objects
-         *   Two players - X (player1) and O (player2)
-         *   Board (board)
-         *   GUI (ui)
+         * Initialize GUI
          */
         Player player1 = new Player(Symbols.X);
         Player player2 = new Player(Symbols.O);
         Board board = new Board();
-        TicTacToeUI ui = new TicTacToeUI();
+        TicTacToeUI ui = new TicTacToeUI(board, player1, player2);
         ui.setButtonActionListener();
           // some debugging info
         player1.printPlayer();
         player2.printPlayer();
-
         
-        // declare & initialize next to player to make a move
-        Player nextToPlay = player1;    // declare
-        
-        for (int i = 0; i < 5; i++) {
-        // reset & draw board
-        board.resetBoard();
         ui.drawBoard(board);
             
         /**
@@ -72,52 +61,8 @@ public class TicTacToeClass implements ActionListener {
          *    if game over, print message
          *    regardless, will switch players
          *    
-         */
-            
-        Boolean gameOver = false;
-        int moveNumber = 0;
-                
-        while (!gameOver) {
-            moveNumber++;   // moves start at 1
-        // get user move
-
-            while (!board.isMoveValid(move = ui.getMove())) {
-                // System.out.println("Invalid move");
-                ui.printUserError("Invalid move");
-                move.printMove();
-            }
-            move.printMove();  // for debugging
-
-            // log the move & draw the new board
-            board.setBox(move.row, move.column, nextToPlay.getPlayerSymbol());
-            ui.drawBoard(board);
-
-            // check if winner or draw
-            if (board.checkWinner (move,nextToPlay.getPlayerSymbol())) {
-                System.out.println("Winner: " + nextToPlay.getPlayerName());
-                gameOver = true;
-            }
-            else if (moveNumber == 9) {
-                System.out.println("Draw");
-                gameOver = true;
-            }
-
-            // switch players
-            if (nextToPlay == player1)
-                nextToPlay = player2;
-            else {
-                nextToPlay = player1;
-            }
+         */            
         }
-    }
-    // System.exit(0);
-    }
-
-    @Override
-    public void actionPerformed(ActionEvent e) {
-        ;
-    }
-    
 }
 
 

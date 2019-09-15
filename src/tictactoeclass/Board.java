@@ -18,6 +18,7 @@ package tictactoeclass;
  *  resetBoard ()                 clears board
  *   
  *  Author: Lee
+ * 
  */
 public class Board {
     public enum Symbols {X, O, b}
