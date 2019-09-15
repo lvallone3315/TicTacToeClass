@@ -8,19 +8,21 @@ package tictactoeclass;
 /**
  * Symbols = enum for markers (ie X O and blank)
  */
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 import tictactoeclass.Board.Symbols;
 
 /**
  *
  * @author leev
  */
-public class TicTacToeClass {
+public class TicTacToeClass implements ActionListener {
 
     /**
      * @param args the command line arguments
      * Currently: no command line arguments
      */
-    public static void main(String[] args) {
+    public static void main(String[] args) throws InterruptedException {
         
         Move move;
         
@@ -29,8 +31,8 @@ public class TicTacToeClass {
         System.out.println("Hello Tic Tac Toe");
         
         // test player class
-        Player playertest = new Player(Symbols.O);
-        playertest.playerTest();
+        // Player playertest = new Player(Symbols.O);
+        // playertest.playerTest();
 
         /*
          * Initialize classes & objects
@@ -42,6 +44,7 @@ public class TicTacToeClass {
         Player player2 = new Player(Symbols.O);
         Board board = new Board();
         TicTacToeUI ui = new TicTacToeUI();
+        ui.setButtonActionListener();
           // some debugging info
         player1.printPlayer();
         player2.printPlayer();
@@ -108,6 +111,11 @@ public class TicTacToeClass {
         }
     }
     // System.exit(0);
+    }
+
+    @Override
+    public void actionPerformed(ActionEvent e) {
+        ;
     }
     
 }
