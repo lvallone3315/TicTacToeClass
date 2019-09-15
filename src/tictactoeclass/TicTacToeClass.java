@@ -12,7 +12,14 @@ package tictactoeclass;
 import tictactoeclass.Board.Symbols;
 
 /**
- *
+ * TicTacToe
+ *   Plays a simple game of TicTacToe
+ *   Two players take turns, choices via JButtons on frame
+ *   Option to restart game at any time
+ * 
+ * Opportunities for improvement:
+ *   Change GUI layout to be a bit nicer (e.g. reset button, messages)
+ *   Keep score for each player
  * @author leev
  */
 public class TicTacToeClass {
@@ -25,46 +32,54 @@ public class TicTacToeClass {
         
         Move move;
         
-        ConsoleRedirect.setConsole();
+        // comment out to hide console
+        //   Console redirect displays console info as a separate window
+        // ConsoleRedirect.setConsole();
         
         System.out.println("Hello Tic Tac Toe");
         
-        // test player class
+        // test player class (as an example of a class unit test
         // Player playertest = new Player(Symbols.O);
         // playertest.playerTest();
 
         /*
-         * Initialize GUI
+         * Initialize objects Players & Board
          */
         Player player1 = new Player(Symbols.X);
         Player player2 = new Player(Symbols.O);
         Board board = new Board();
+        
+        /*
+         * Initialize GUI, including button listeners
+         * Game logic is in the GUI class
+        */
         TicTacToeUI ui = new TicTacToeUI(board, player1, player2);
         ui.setButtonActionListener();
-          // some debugging info
+
+        // Console version - draw board
+        //    verify players set up correctly
         player1.printPlayer();
         player2.printPlayer();
-        
         ui.drawBoard(board);
-            
-        /**
-         *           Play one game
-         * PreConditions: 
-         *    nextToPlay -> player who goes first
-         *    blank board displayed
-         * PostCondition:
-         *    Game outcome printed
-         *    nextToPlay -> player who did NOT make last move
-         * Until game is won, drew or reset
-         *    get a valid move
-         *    check if player won
-         *    if game over, print message
-         *    regardless, will switch players
-         *    
-         */            
         }
 }
 
+// below comments are initial pseudo-code for game
+/**
+ *           Play one game
+ * PreConditions: 
+ *    nextToPlay -> player who goes first
+ *    blank board displayed
+ * PostCondition:
+ *    Game outcome printed
+ *    nextToPlay -> player who did NOT make last move
+ * Until game is won, drew or reset
+ *    get a valid move
+ *    check if player won
+ *    if game over, print message
+ *    regardless, will switch players
+ *    
+ */  
 
 
 /**

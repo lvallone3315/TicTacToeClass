@@ -22,6 +22,7 @@ package tictactoeclass;
  */
 public class Board {
     public enum Symbols {X, O, b}
+    private Move winArray[] = new Move[3];   // winning boxes
     
     private Symbols[][] boardArray = new Symbols [3][3];
     
@@ -56,7 +57,7 @@ public class Board {
         }
     }
     
-    public Boolean checkWinner(Move move, Symbols symbol) {
+    public Boolean isWinner(Move move, Symbols symbol) {
         int row, col;
         // check row winner
         for (row = 0; row < 3; row++) {
@@ -66,6 +67,9 @@ public class Board {
                 }
             }
             if (col == 3) {  // means row winner
+                winArray[0] = new Move(row, 0);
+                winArray[1] = new Move(row, 1);
+                winArray[2] = new Move(row, 2);
                 return true;
             }
         }
@@ -77,17 +81,26 @@ public class Board {
                 }
             }
             if (row == 3) {
+                winArray[0] = new Move(0, col);
+                winArray[1] = new Move(1, col);
+                winArray[2] = new Move(2, col);
                 return true;  // column winner
             }
         }
         if ((boardArray[0][0] == symbol)  &&
                 (boardArray[1][1] == symbol) &&
                 (boardArray[2][2] == symbol)) {
+            winArray[0] = new Move(0, 0);
+            winArray[1] = new Move(1, 1);
+            winArray[2] = new Move(2, 2);
             return true;
         }
         if ((boardArray[0][2] == symbol)  &&
                 (boardArray[1][1] == symbol) &&
                 (boardArray[2][0] == symbol)) {
+            winArray[0] = new Move(0, 2);
+            winArray[1] = new Move(1, 1);
+            winArray[2] = new Move(2, 0);
             return true;
         }
         return false;   // for now, need to check diags
@@ -106,5 +119,9 @@ public class Board {
             return false;
         }
         return true;
+    }
+    
+    public Move[] getWinningBoxes() {
+        return winArray;
     }
 }
