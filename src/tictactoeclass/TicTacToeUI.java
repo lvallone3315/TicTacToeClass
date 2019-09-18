@@ -27,20 +27,20 @@ import tictactoeclass.Board.Symbols;
  *     @param board - instance of board class, already initialized
  *     @param player1 - instance of a player, already initialized
  *     @param player2 - 2nd player instance, already initialized
- *   
- *    sets up buttons including boxes & reset game
- *    sets up user message text area (win, loss, next to play, errors)
- *    initializes game board (board class)
- *    sets up listeners for user input
- * 
- * Other methods
- *   resetGame - clears GUI entries, and resets board in board class
- *   playGame - called by actionListener on button (box) click
- *     game play logic, move validation, etc.
- * 
- * Old console methods
- *   drawBoard(Board)   draws board on console screen, retrieves values from Board
- *   getMove()          returns user move, row & column (automates moves)
+ * <P>
+ *    sets up buttons including boxes & reset game <br>
+ *    sets up user message text area (win, loss, next to play, errors) <br>
+ *    initializes game board (board class) <br>
+ *    sets up listeners for user input <br>
+ * <P>
+ * Other methods <br>
+ *   resetGame - clears GUI entries, and resets board in board class <br>
+ *   playGame - called by actionListener on button (box) click <br>
+ *     game play logic, move validation, etc. <br>
+ * <P>
+ * Old console methods <br>
+ *   drawBoard(Board)   draws board on console screen, retrieves values from Board <br>
+ *   getMove()          returns user move, row & column (automates moves) <br>
  *
  * @author leev
  */
@@ -114,11 +114,11 @@ public class TicTacToeUI extends JFrame implements ActionListener {
     }
     
     /** 
-     * resetGame
-     *   called when new game requested
-     *    clears all button contents (ie TicTacToe boxes)
-     *    resets move counter & gameOver flag
-     *    resets board in board class
+     * resetGame <br>
+     *   called when new game requested <br>
+     *    clears all button contents (ie TicTacToe boxes) <br>
+     *    resets move counter & gameOver flag <br>
+     *    resets board in board class <br>
      */
     public void resetGame () {
         
@@ -137,10 +137,10 @@ public class TicTacToeUI extends JFrame implements ActionListener {
         moveNumber = 0;
     }
 
-    /*
-     * Error message handlers
-     *  printUserError currently only goes to console
-     *  printUserMessage only goes to use window (userMessage area)
+    /**
+     * Error message handlers <br>
+     *  printUserError currently only goes to console <br>
+     *  printUserMessage only goes to use window (userMessage area) <br>
     */
     public void printUserError (String userError) {
         System.out.println("USER ERROR: " + userError);
@@ -151,14 +151,14 @@ public class TicTacToeUI extends JFrame implements ActionListener {
         setVisible(true);
     }
 
-    /*
-     * process button blick
-     * two types
-     *   reset button - calls reset game method
-     *   TicTacToe button - calls playGame to process
-     *
-     * Note: row & column determined by X & Y coordinates
-     *  VERY BAD - hard codes in button coordinates returned by handler
+    /**
+     * process button blick <br>
+     * two types <br>
+     *   reset button - calls reset game method <br>
+     *   TicTacToe button - calls playGame to process <br>
+     *<P>
+     * Note: row & column determined by X & Y coordinates <br>
+     *  VERY BAD - hard codes in button coordinates returned by handler <br>
     */
     @Override
     public void actionPerformed(ActionEvent e) {
@@ -180,19 +180,19 @@ public class TicTacToeUI extends JFrame implements ActionListener {
     }
     
     /**
-     *   playGame - process move selection
-     * @param row - row # of box selected 0-2
-     * @param column - column # of box 0-2
-     * 
-     * validates move ...
-     * if valid
-     *   updates box in board class
-     *   checks win or draw on this move
-     *   toggles player & 
+     *   playGame - process move selection <br>
+     * @param row - row # of box selected 0-2 <br>
+     * @param column - column # of box 0-2 <br>
+     * <P>
+     * validates move ... <br>
+     * if valid <br>
+     *   updates box in board class <br>
+     *   checks win or draw on this move <br>
+     *   toggles player & <br>
      *   updates user message display (win, draw, next to play, errors)
      * 
      */
-    void playGame(int row, int column) {
+    public void playGame(int row, int column) {
         if (gameOver) {
             return;  // game over, do not process
         }
@@ -245,7 +245,7 @@ public class TicTacToeUI extends JFrame implements ActionListener {
         setVisible(true);
     }
     
-    /*
+    /**
      * methods below used for console text version of the game
      *   drawboard draws a text version of board on console
      *   getMove creates a random move & returns it to caller

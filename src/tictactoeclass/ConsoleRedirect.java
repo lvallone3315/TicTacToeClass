@@ -16,22 +16,26 @@ import java.io.IOException;
 import java.io.OutputStream;
 
 /**
- *
+ * ConsoleRedirect extends from OutputStream to redirect output to a JtextArea <br>
+ *   If configured, console output appears as a separate window from the GUI
+ *   providing access to debug & other access without IDE console window
+ *   <P>
+ *   Code based on approach from www.codejava.net
  * @author leev
  */
 public class ConsoleRedirect extends OutputStream {
     
-    /**
- * This class extends from OutputStream to redirect output to a JTextArrea
- * @author www.codejava.net
- *
- */
     private JTextArea textArea;
      
     public ConsoleRedirect(JTextArea textArea) {
         this.textArea = textArea;
     }
      
+    /**
+     * Override "write" method
+     * @param b - byte to be written to console
+     * @throws IOException 
+     */
     @Override
     public void write(int b) throws IOException {
         // redirects data to the text area
@@ -40,6 +44,11 @@ public class ConsoleRedirect extends OutputStream {
         textArea.setCaretPosition(textArea.getDocument().getLength());
     }
     
+    /**
+     * Configure Window for Console output <br>
+     * Redirect standard output & standard error to console window <br>
+     * If console window closed, exit entire program
+     */
     public static void setConsole () {
         JFrame frame = new JFrame();
         frame.add( new JLabel(" Console" ), BorderLayout.NORTH );

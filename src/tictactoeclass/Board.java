@@ -7,21 +7,25 @@ package tictactoeclass;
 
 
 /**
- *   Board class
- *    Defines symbols for X and O, regardless of actual symbols
- *    keeps track of boxes played
- *    implements methods for resetting board, getting & setting box contents
- *  
- *  getBox (row, column)          returns contents of a box
- *  setBox (row, column, symbol)  enters symbol into box
- *                                return error (-1) if box already filled
- *  resetBoard ()                 clears board
+ *   Board class <br>
+ *    Defines enum for X and O, regardless of actual text symbols used <br>
+ *    keeps track of boxes played <br>
+ *    implements methods for resetting board, getting & setting box contents <br>
+ *  <P>
+ *  getBox (row, column)          returns contents of a box <br>
+ *  setBox (row, column, symbol)  enters symbol into box <br>
+ *           if box is not empty, assert, since assumes checked prior <br>
+ *  resetBoard ()                 clears board <br>
+ *  isWinner()                    checks if specified symbol has won <br>
+ *    assumes calling routine only asks about a specific player
+ *  isMoveValid()        checks if row & column within range & box empty <br>
+ *  getWinningBoxes()    returns boxes with winning line for display <br>
  *   
  *  Author: Lee
  * 
  */
 public class Board {
-    public enum Symbols {X, O, b}
+    public enum Symbols {X, O, b}    // b = blank (ie empty)
     private Move winArray[] = new Move[3];   // winning boxes
     
     private Symbols[][] boardArray = new Symbols [3][3];
@@ -37,7 +41,7 @@ public class Board {
         return(boardArray[row][column]);
     }
     
-    // setBox (fow, column, symbol)  enters symbol into box
+    // setBox (tow, column, symbol)  enters symbol into box
     // Assumes: box is empty (see isMoveValid, assert if not
     
     public void setBox(int row, int column, Symbols symbol) {

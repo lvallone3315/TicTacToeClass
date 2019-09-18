@@ -12,25 +12,23 @@ package tictactoeclass;
 import tictactoeclass.Board.Symbols;
 
 /**
- * TicTacToe
- *   Plays a simple game of TicTacToe
- *   Two players take turns, choices via JButtons on frame
- *   Option to restart game at any time
- * 
+ * TicTacToe (implements main()) <P>
+ *   Plays a simple game of TicTacToe <br>
+ *   Two players take turns, choices via JButtons on frame <br>
+ *   Option to restart game at any time <br>
+ * <P>
  * Opportunities for improvement:
- *   Change GUI layout to be a bit nicer (e.g. reset button, messages)
- *   Keep score for each player
+ *   Change GUI layout to be a bit nicer (e.g. reset button, messages) <br>
+ *   Keep score for each player <br>
  * @author leev
  */
 public class TicTacToeClass {
 
     /**
-     * @param args the command line arguments
+     * @param args the command line arguments <br>
      * Currently: no command line arguments
      */
     public static void main(String[] args) throws InterruptedException {
-        
-        Move move;
         
         // comment out to hide console
         //   Console redirect displays console info as a separate window

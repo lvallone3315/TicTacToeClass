@@ -6,8 +6,11 @@
 package tictactoeclass;
 
 /**
- *   Move class
- * emulates a structure with row & column
+ *   Move class <br>
+ * creates a structure with row & column <br>
+ * used in routines to return a row & column <br>
+ * <P>
+ * Opportunity: change all references to row & column to use a "move" object
  *
  * @author leev
  */

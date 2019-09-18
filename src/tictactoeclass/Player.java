@@ -10,13 +10,17 @@ import javax.swing.JOptionPane;
 import tictactoeclass.Board.Symbols;
 
 /**
- * Player class
- *   Tracks players
- *   Initially supports players name & symbol (text)
- * 
- *  getName()   returns player's name
- *  setName()   stores player's name
- *  getPlayerSymbol()   returns player's symbol as an enum(e.g. X or O)
+ * Player class <br>
+ *   Tracks players <br>
+ *   Initially supports players name & symbol (text) <br>
+ * <P>
+ *  getName()   returns player's name <br>
+ *  setName()   stores player's name <br>
+ *  getPlayerSymbol()   returns player's symbol as an enum(e.g. X or O) <br>
+ * <P>
+ * Includes a unit testing method "playerTest" <br>
+ *   which opens up a dialog box, allows tester to enter player name, <br>
+ *   prints class instance variable contents & loops until "exit" entered
  * @author leev
  */
 public class Player {
