@@ -2,6 +2,13 @@
  * To change this license header, choose License Headers in Project Properties.
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
+ *
+ * Test change for gerrit repository change
+ *   https://lvallone3315@review.gerrithub.io/a/lvallone3315/TicTacToeClass"
+ * or
+ *   https://review.gerrithub.io/lvallone3315/TicTacToeClass
+ * Current github repository
+ *   https://github.com/lvallone3315/TicTacToeClass.git
  */
 package tictactoeclass;
 
@@ -12,18 +19,21 @@ package tictactoeclass;
 import tictactoeclass.Board.Symbols;
 
 /**
- * TicTacToe (implements main()) <P>
+ * TicTacToe (implements main()) <br>
  *   Plays a simple game of TicTacToe <br>
  *   Two players take turns, choices via JButtons on frame <br>
  *   Option to restart game at any time <br>
  * <P>
- * Opportunities for improvement:
+ * creates two player objects & a board object <br>
+ * initializes GUI and relinquishes control to GUI <br>
+ * also includes comments with original design pseudo-code
+ * <P>
+ * Opportunities for improvement: <br>
  *   Change GUI layout to be a bit nicer (e.g. reset button, messages) <br>
  *   Keep score for each player <br>
  * @author leev
  */
 public class TicTacToeClass {
-
     /**
      * @param args the command line arguments <br>
      * Currently: no command line arguments
