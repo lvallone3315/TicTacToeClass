@@ -55,6 +55,8 @@ public class TicTacToeUI extends JFrame implements ActionListener {
     
     JLabel userMessage;
     
+    private Drop drop;
+    
     // global pointers to board & player instances
     //   nextToPlay = player whose turn is next
     Board guiBoard;
@@ -66,10 +68,11 @@ public class TicTacToeUI extends JFrame implements ActionListener {
     int moveNumber = 0;    // easy way to identify a draw (9 moves, no winner)
     
     // Constructor - see above Javadoc for details
-    TicTacToeUI(Board board, Player player1, Player player2) {
+    TicTacToeUI(Board board, Player player1, Player player2, Drop dropInput) {
         guiBoard = board;
         guiPlayer1 = player1;
         guiPlayer2 = player2;
+        this.drop = dropInput;
         System.out.println("TicTacToeUI constructor");
             // declare & initialize next to player to make a move
         nextToPlay = guiPlayer1;    // declare
@@ -169,11 +172,18 @@ public class TicTacToeUI extends JFrame implements ActionListener {
             }
             else {
                 JButton source2 = (JButton) e.getSource();
+                
+                // alternative: is button[row][column] == e.getSource();
 
                 System.out.println(source2.getX());
                 System.out.println(source2.getY());
                 // x offset is 128, y offset is 90 - highly dependent on button size
                 // *** BAD ***, but better than 9 different button handlers
+                
+                drop.put(new Move(source2.getY()/90, source2.getX()/128));
+                try {
+                    Thread.sleep(100);
+                } catch (InterruptedException ev) {}
                 playGame(source2.getY()/90, source2.getX()/128);
             }
         }

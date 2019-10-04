@@ -57,11 +57,14 @@ public class TicTacToeClass {
         Player player2 = new Player(Symbols.O);
         Board board = new Board();
         
+        // test message passing from UI
+        Drop drop = new Drop();
+        
         /*
          * Initialize GUI, including button listeners
          * Game logic is in the GUI class
         */
-        TicTacToeUI ui = new TicTacToeUI(board, player1, player2);
+        TicTacToeUI ui = new TicTacToeUI(board, player1, player2, drop);
         ui.setButtonActionListener();
 
         // Console version - draw board
@@ -69,7 +72,15 @@ public class TicTacToeClass {
         player1.printPlayer();
         player2.printPlayer();
         ui.drawBoard(board);
+        
+        while (true) {
+            Move move = drop.take();
+            System.out.format("MESSAGE RECEIVED: %d %d%n", move.row, move.column);
+            try {
+                Thread.sleep(100);
+            } catch (InterruptedException e) {}
         }
+    }
 }
 
 // below comments are initial pseudo-code for game
