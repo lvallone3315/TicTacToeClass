@@ -8,8 +8,6 @@ package tictactoeclass;
 import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.Font;
-import java.awt.Graphics;
-import java.awt.Graphics2D;
 import java.awt.GridLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
@@ -63,9 +61,7 @@ public class TicTacToeUI extends JFrame implements ActionListener {
     Player guiPlayer1;
     Player guiPlayer2;
     Player nextToPlay;
-    
-    Boolean gameOver = false;  // if game over, don't process additional clicks
-    int moveNumber = 0;    // easy way to identify a draw (9 moves, no winner)
+
     
     // Constructor - see above Javadoc for details
     TicTacToeUI(Board board, Player player1, Player player2, Drop dropInput) {
@@ -120,8 +116,7 @@ public class TicTacToeUI extends JFrame implements ActionListener {
      * resetGame <br>
      *   called when new game requested <br>
      *    clears all button contents (ie TicTacToe boxes) <br>
-     *    resets move counter & gameOver flag <br>
-     *    resets board in board class <br>
+     *    resets board in board class including move counter <br>
      */
     public void resetGame () {
         
@@ -136,8 +131,6 @@ public class TicTacToeUI extends JFrame implements ActionListener {
         // Reset board & moves
         //   assumes Next to Play is already set
         guiBoard.resetBoard();
-        gameOver = false;
-        moveNumber = 0;
     }
 
     /**
@@ -203,7 +196,7 @@ public class TicTacToeUI extends JFrame implements ActionListener {
      * 
      */
     public void playGame(int row, int column) {
-        if (gameOver) {
+        if (guiBoard.isGameOver()) {
             return;  // game over, do not process
         }
         Move move = new Move(row,column);
@@ -215,7 +208,6 @@ public class TicTacToeUI extends JFrame implements ActionListener {
             return;  // invalid move, let user repeat
         }
         else {
-            moveNumber++;
             guiBoard.setBox(move.row, move.column, nextToPlay.getPlayerSymbol());
             Symbols symbol = nextToPlay.getPlayerSymbol();
             button[row][column].setLabel(symbol.name());
@@ -233,12 +225,10 @@ public class TicTacToeUI extends JFrame implements ActionListener {
             button[winningBoxes[0].row][winningBoxes[0].column].setForeground(Color.blue);
             button[winningBoxes[1].row][winningBoxes[1].column].setForeground(Color.blue);
             button[winningBoxes[2].row][winningBoxes[2].column].setForeground(Color.blue);
-            gameOver = true;
         }
-        else if (moveNumber == 9) {
+        else if (guiBoard.isDraw()) {
             System.out.println("Draw");
             printUserMessage("It's a DRAW!");
-            gameOver = true;
         }
         // no closing else
 
@@ -248,7 +238,7 @@ public class TicTacToeUI extends JFrame implements ActionListener {
         else {
             nextToPlay = guiPlayer1;
         }
-        if (!gameOver) {
+        if (!guiBoard.isGameOver()) {
             System.out.println(nextToPlay.getPlayerName() + "'s turn");
             printUserMessage(nextToPlay.getPlayerName() + "'s turn");
         }
