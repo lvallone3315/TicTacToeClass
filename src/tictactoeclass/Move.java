@@ -18,12 +18,26 @@ public class Move {
     public int row;
     public int column;
     
+    static int numInstances; // # of move structures created & not freed
+    
     Move (int r, int c) {
         row = r;
         column = c;
+        numInstances++;
+        System.out.println("Move instance constructed: " + numInstances);
+    }
+    
+    public String toString() {
+        String returnString = "Row: "+ this.row + "\tColumn: " + this.column;
+        return returnString;
     }
     
     public void printMove() {
-        System.out.println("Row: "+ this.row + "\tColumn: " + this.column);
+        System.out.println(this.toString());
+    }
+    
+    public void finalize() {
+        numInstances--;  // instance freed
+        System.out.println("Move finalize method, number instances: " + numInstances);
     }
 }
