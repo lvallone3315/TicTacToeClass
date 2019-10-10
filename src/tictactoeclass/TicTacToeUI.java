@@ -112,6 +112,26 @@ public class TicTacToeUI extends JFrame implements ActionListener {
         resetButton.addActionListener(this);
     }
     
+    /**
+     * labelButton() label button with string
+     * @args
+     *   row - button row
+     *   col - button column
+     *   text - string for button label
+     *   color - <optional> JSwing text color (default Color.black)
+     */
+    public void labelButton(int row, int col, String text) {
+        labelButton(row, col, text, Color.black);
+    }
+    
+    public void labelButton(int row, int col, String text, Color color) {
+        button[row][col].setText(text);
+        button[row][col].setForeground(color);
+    }
+    // don't change label, just the color
+    public void labelButton(int row, int col, Color color) {
+        button[row][col].setForeground(color);
+    }
     /** 
      * resetGame <br>
      *   called when new game requested <br>
@@ -123,8 +143,7 @@ public class TicTacToeUI extends JFrame implements ActionListener {
         // Reset buttons & user message
         for (int row = 0; row < 3; row++) {
             for (int column = 0; column < 3; column++) {
-                button[row][column].setText("");
-                button[row][column].setForeground(Color.black);
+                labelButton(row, column, " ", Color.black);
             }
         }
         userMessage.setText (nextToPlay.getPlayerName() + "'s turn");
@@ -210,7 +229,7 @@ public class TicTacToeUI extends JFrame implements ActionListener {
         else {
             guiBoard.setBox(move.row, move.column, nextToPlay.getPlayerSymbol());
             Symbols symbol = nextToPlay.getPlayerSymbol();
-            button[row][column].setLabel(symbol.name());
+            labelButton(row,column,symbol.name());
             drawBoard(guiBoard);
         }
                     // check if winner or draw
@@ -222,9 +241,10 @@ public class TicTacToeUI extends JFrame implements ActionListener {
               //   should be a separate private method
               //   separate = isolates strategy to show winning boxes
             Move[] winningBoxes = guiBoard.getWinningBoxes();
-            button[winningBoxes[0].row][winningBoxes[0].column].setForeground(Color.blue);
-            button[winningBoxes[1].row][winningBoxes[1].column].setForeground(Color.blue);
-            button[winningBoxes[2].row][winningBoxes[2].column].setForeground(Color.blue);
+            labelButton(winningBoxes[0].row, winningBoxes[0].column, Color.blue);
+            labelButton(winningBoxes[1].row, winningBoxes[1].column, Color.blue);
+            labelButton(winningBoxes[2].row, winningBoxes[2].column, Color.blue);
+            
         }
         else if (guiBoard.isDraw()) {
             System.out.println("Draw");
