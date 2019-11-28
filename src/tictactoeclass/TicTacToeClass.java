@@ -38,6 +38,9 @@ public class TicTacToeClass {
      * @param args the command line arguments <br>
      * Currently: no command line arguments
      */
+    
+    static final String VERSION = "v0.2";
+    
     public static void main(String[] args) throws InterruptedException {
         
         // comment out to hide console
@@ -80,6 +83,10 @@ public class TicTacToeClass {
                 Thread.sleep(100);
             } catch (InterruptedException e) {}
         }
+    }
+    
+    public static String getVersion() {
+        return VERSION;
     }
 }
 

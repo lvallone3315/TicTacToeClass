@@ -50,8 +50,8 @@ import tictactoeclass.Board.Symbols;
  */
 public class TicTacToeUI extends JFrame implements ActionListener {
     
-    final static int WINDOW_WIDTH = 400;  // window width in pixels
-    final static int WINDOW_HEIGHT = 600; // window height in pixels
+    final static int WINDOW_WIDTH = 500;  // window width in pixels
+    final static int WINDOW_HEIGHT = 700; // window height in pixels
     final static int PANEL_WIDTH = WINDOW_WIDTH - 75;
     final static int PANEL_HEIGHT = WINDOW_HEIGHT - 75;
     
@@ -92,14 +92,14 @@ public class TicTacToeUI extends JFrame implements ActionListener {
          *   resetPanel - Reset button
         */
         JFrame window = new JFrame();
-        window.setTitle("Tic Tac Toe");
+        window.setTitle("CSCI 3315 Tic Tac Toe " + TicTacToeClass.getVersion());
         window.setSize(WINDOW_WIDTH, WINDOW_HEIGHT);
         window.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         
         // status messages (top of frame) - player, win/loss/draw, invalid moves
         //   ToDo - get rid of hardcoded sizes (e.g. panel height, font size)
         Panel userMessagePanel = new Panel();
-        userMessage = new JLabel(nextToPlay.getPlayerName() + "'s turn",JLabel.CENTER);
+        userMessage = new JLabel(nextToPlay.getPlayerName() + " turn",JLabel.CENTER);
         userMessage.setSize(PANEL_WIDTH,100);
         userMessage.setFont(new Font("Arial", Font.ITALIC, 20));
         userMessage.setHorizontalAlignment(JLabel.CENTER);
@@ -182,7 +182,7 @@ public class TicTacToeUI extends JFrame implements ActionListener {
                 labelButton(row, column, " ", Color.black);
             }
         }
-        userMessage.setText (nextToPlay.getPlayerName() + "'s turn");
+        userMessage.setText (nextToPlay.getPlayerName() + " turn");
         // Reset board & moves
         //   assumes Next to Play is already set
         guiBoard.resetBoard();
@@ -306,8 +306,8 @@ public class TicTacToeUI extends JFrame implements ActionListener {
             nextToPlay = guiPlayer1;
         }
         if (!guiBoard.isGameOver()) {
-            System.out.println(nextToPlay.getPlayerName() + "'s turn");
-            printUserMessage(nextToPlay.getPlayerName() + "'s turn");
+            System.out.println(nextToPlay.getPlayerName() + " turn");
+            printUserMessage(nextToPlay.getPlayerName() + " turn");
         }
         setVisible(true);
     }
