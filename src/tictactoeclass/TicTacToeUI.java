@@ -5,10 +5,12 @@
  */
 package tictactoeclass;
 
+import java.awt.BorderLayout;
 import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.Font;
 import java.awt.GridLayout;
+import java.awt.Panel;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.util.Random;
@@ -36,6 +38,10 @@ import tictactoeclass.Board.Symbols;
  *   playGame - called by actionListener on button (box) click <br>
  *     game play logic, move validation, etc. <br>
  * <P>
+ * ToDo <br>
+ *   Refactor board size to be variable
+ *   Refactor hard coded sizes
+ * <P>
  * Old console methods <br>
  *   drawBoard(Board)   draws board on console screen, retrieves values from Board <br>
  *   getMove()          returns user move, row & column (automates moves) <br>
@@ -45,7 +51,9 @@ import tictactoeclass.Board.Symbols;
 public class TicTacToeUI extends JFrame implements ActionListener {
     
     final static int WINDOW_WIDTH = 400;  // window width in pixels
-    final static int WINDOW_HEIGHT = 400; // window height in pixels
+    final static int WINDOW_HEIGHT = 600; // window height in pixels
+    final static int PANEL_WIDTH = WINDOW_WIDTH - 75;
+    final static int PANEL_HEIGHT = WINDOW_HEIGHT - 75;
     
     JButton[][] button = new JButton[3][3];
     JButton resetButton;
@@ -72,29 +80,57 @@ public class TicTacToeUI extends JFrame implements ActionListener {
         System.out.println("TicTacToeUI constructor");
             // declare & initialize next to player to make a move
         nextToPlay = guiPlayer1;    // declare
+        
+        /*
+         * JFrame uses Border layout
+         *   User message at top, tic tac toe board center, New game button bottom
+         *   note: components will resize automatically with this layout
+         * 
+         * Panels:
+         *   userMessagePanel - single line of text for status messages
+         *   boardPanel - Tic Tac Toe board
+         *   resetPanel - Reset button
+        */
         JFrame window = new JFrame();
         window.setTitle("Tic Tac Toe");
         window.setSize(WINDOW_WIDTH, WINDOW_HEIGHT);
         window.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-        window.setLayout(new GridLayout(4,3));
-       
+        
+        // status messages (top of frame) - player, win/loss/draw, invalid moves
+        //   ToDo - get rid of hardcoded sizes (e.g. panel height, font size)
+        Panel userMessagePanel = new Panel();
+        userMessage = new JLabel(nextToPlay.getPlayerName() + "'s turn",JLabel.CENTER);
+        userMessage.setSize(PANEL_WIDTH,100);
+        userMessage.setFont(new Font("Arial", Font.ITALIC, 20));
+        userMessage.setHorizontalAlignment(JLabel.CENTER);
+        userMessagePanel.add(userMessage);
+        
+        // Tic Tac Toe board w/ a 3x3 grid of buttons
+        Panel boardPanel = new Panel();
+        boardPanel.setLayout(new GridLayout(3,3));
+
         for (int row = 0; row < 3; row++) {
             for (int column = 0; column < 3; column++) {
                 button[row][column] = new JButton("    ");
-                button[row][column].setPreferredSize(new Dimension(75, 75));
+                button[row][column].setPreferredSize(new Dimension(100, 100));
                 button[row][column].setFont(new Font("Arial", Font.BOLD, 40));
-                window.add(button[row][column]);
+                boardPanel.add(button[row][column]);
             }
         }
-        userMessage = new JLabel(nextToPlay.getPlayerName() + "'s turn",JLabel.CENTER);
-        userMessage.setSize(350,100);
-        userMessage.setFont(new Font("Arial", Font.PLAIN, 12));
-        userMessage.setHorizontalAlignment(JLabel.CENTER);
-        window.add(userMessage);
         
+
+        // Reset button panel
         resetButton = new JButton(RESET_TEXT);
-        resetButton.setPreferredSize(new Dimension(20, 10));
-        window.add(resetButton);
+        resetButton.setPreferredSize(new Dimension(150, 50));
+        Panel resetPanel = new Panel();
+        resetPanel.add(resetButton);
+        resetPanel.add(resetButton);
+        
+        // Configure Jframe layout, add panels & make window visible
+        window.setLayout(new BorderLayout());
+        window.add(userMessagePanel, BorderLayout.PAGE_START);
+        window.add(boardPanel, BorderLayout.CENTER);
+        window.add(resetPanel, BorderLayout.PAGE_END);
 
         window.setVisible(true);
         
@@ -167,36 +203,47 @@ public class TicTacToeUI extends JFrame implements ActionListener {
     }
 
     /**
-     * process button blick <br>
+     * process button click <br>
      * two types <br>
      *   reset button - calls reset game method <br>
      *   TicTacToe button - calls playGame to process <br>
-     *<P>
-     * Note: row & column determined by X & Y coordinates <br>
-     *  VERY BAD - hard codes in button coordinates returned by handler <br>
     */
     @Override
     public void actionPerformed(ActionEvent e) {
+        final int INVALID = 99;
+        
         if (e.getSource() instanceof JButton) {
             if (e.getSource()==resetButton) {
                 System.out.println("Reset Button clicked");  // reset game
                 resetGame();
             }
             else {
-                JButton source2 = (JButton) e.getSource();
+                // Assume Tic Tac Toe button pushed, identify which button
+                int buttonRow = INVALID;
+                int buttonColumn = INVALID;
                 
-                // alternative: is button[row][column] == e.getSource();
+                for (int row = 0; row < 3; row++) {
+                    for (int column = 0; column < 3; column++) {
+                        if (e.getSource() == button[row][column]) {
+                            buttonRow = row;
+                            buttonColumn = column;
+                        }
+                    }
+                }
+                
+                // playGame() currently used to play button push           
+                // drop is prototype for dual thread synchronization
 
-                System.out.println(source2.getX());
-                System.out.println(source2.getY());
-                // x offset is 128, y offset is 90 - highly dependent on button size
-                // *** BAD ***, but better than 9 different button handlers
-                
-                drop.put(new Move(source2.getY()/90, source2.getX()/128));
-                try {
-                    Thread.sleep(100);
-                } catch (InterruptedException ev) {}
-                playGame(source2.getY()/90, source2.getX()/128);
+                if (buttonRow != INVALID) {
+                    drop.put(new Move(buttonRow, buttonColumn));
+                    try {
+                        Thread.sleep(100);
+                    } catch (InterruptedException ev) {}
+                    playGame(buttonRow, buttonColumn);
+                }
+                else {
+                    System.err.println("INVALID ACTION EVENET");
+                }
             }
         }
     }
