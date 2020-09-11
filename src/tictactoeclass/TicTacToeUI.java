@@ -57,7 +57,10 @@ public class TicTacToeUI extends JFrame implements ActionListener {
     
     JButton[][] button = new JButton[3][3];
     JButton resetButton;
+
     final String RESET_TEXT = "New Game";
+    JButton aiSeedButton;
+    final String SEED_TEXT = "Seed AI Machine";   
     
     JLabel userMessage;
     
@@ -124,13 +127,21 @@ public class TicTacToeUI extends JFrame implements ActionListener {
         resetButton.setPreferredSize(new Dimension(150, 50));
         Panel resetPanel = new Panel();
         resetPanel.add(resetButton);
-        resetPanel.add(resetButton);
+        // resetPanel.add(resetButton);
+        
+        // AI Seed button
+        aiSeedButton = new JButton(SEED_TEXT);
+        aiSeedButton.setPreferredSize(new Dimension(150, 50));
+        Panel aiSeedPanel = new Panel();
+        aiSeedPanel.add(aiSeedButton);
+        // aiSeedPanel.add(aiSeedButton);
         
         // Configure Jframe layout, add panels & make window visible
         window.setLayout(new BorderLayout());
         window.add(userMessagePanel, BorderLayout.PAGE_START);
         window.add(boardPanel, BorderLayout.CENTER);
         window.add(resetPanel, BorderLayout.PAGE_END);
+        window.add(aiSeedPanel, BorderLayout.EAST);
 
         window.setVisible(true);
         
@@ -146,6 +157,7 @@ public class TicTacToeUI extends JFrame implements ActionListener {
             }
         }
         resetButton.addActionListener(this);
+        aiSeedButton.addActionListener(this);
     }
     
     /**
@@ -216,6 +228,10 @@ public class TicTacToeUI extends JFrame implements ActionListener {
                 System.out.println("Reset Button clicked");  // reset game
                 resetGame();
             }
+            else if (e.getSource() == aiSeedButton) {
+                System.out.println("ai Seed Button clicked");
+                runAISeed();
+            }
             else {
                 // Assume Tic Tac Toe button pushed, identify which button
                 int buttonRow = INVALID;
@@ -277,11 +293,20 @@ public class TicTacToeUI extends JFrame implements ActionListener {
             Symbols symbol = nextToPlay.getPlayerSymbol();
             labelButton(row,column,symbol.name());
             drawBoard(guiBoard);
+            if (nextToPlay == guiPlayer1)
+                guiBoard.storeHashCode(guiBoard.getHashCode());
         }
                     // check if winner or draw
         if (guiBoard.isWinner (move,nextToPlay.getPlayerSymbol())) {
             System.out.println("Winner: " + nextToPlay.getPlayerName());
             printUserMessage("WINNER!: " + nextToPlay.getPlayerName());
+            
+            // if Player 1 wins - save the hash codes (ie good game play)
+            if (nextToPlay == guiPlayer1) {
+                guiBoard.saveGameHashList();
+            }
+            guiBoard.resetGameHashList();
+            // guiBoard.printHashArray();
             
               // Board tracks winning boxes, query and change color
               //   should be a separate private method
@@ -303,12 +328,28 @@ public class TicTacToeUI extends JFrame implements ActionListener {
             nextToPlay = guiPlayer2;
         else {
             nextToPlay = guiPlayer1;
+            System.out.println("Best move is " + 
+                    guiBoard.findBestMove(guiPlayer1.getPlayerSymbol()));
         }
         if (!guiBoard.isGameOver()) {
             System.out.println(nextToPlay.getPlayerName() + " turn");
             printUserMessage(nextToPlay.getPlayerName() + " turn");
         }
         setVisible(true);
+    }
+    
+    public void runAISeed() {
+        Random rand = new Random();
+        int row; int column;
+        for (int i = 1; i < 200; i++) {
+            while (!guiBoard.isGameOver()) {
+                row = rand.nextInt(3);
+                column = rand.nextInt(3);
+                playGame(row,column);
+            }
+            resetGame();
+        }
+        guiBoard.printHashArray();
     }
     
     /**

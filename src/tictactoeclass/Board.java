@@ -5,6 +5,7 @@
  */
 package tictactoeclass;
 
+import java.util.*;
 
 /**
  *   Board class <br>
@@ -33,6 +34,10 @@ package tictactoeclass;
 public class Board {
     public static final int RC_SIZE = 3;  // Row Column size
     public static final int NUM_BOXES = RC_SIZE*RC_SIZE;  // full board count, for deciding draws
+    
+    private static final int MAXHASH = 4999;  // size of hash table
+    private List<Integer> gameHashList = new ArrayList<Integer>();
+    private static int[] hashArray = new int[MAXHASH];
     
     public enum Symbols {X, O, b}    // b = blank (ie empty)
     private Move winArray[] = new Move[RC_SIZE];   // winning boxes
@@ -187,5 +192,75 @@ public class Board {
         returnString += "\nwinArraay: " + winArray;
         returnString += "\n";
         return returnString;
+    }
+    
+    
+    /**
+     * getHashCode()
+     * @return hash value (0 - MAXHASH) for current board
+     */
+    public int getHashCode() {
+        int hash = 0;
+        for (int i = 0; i < RC_SIZE; i++)
+            for (int j = 0; j < RC_SIZE; j++)
+                hash = hash*7 + boardArray[i][j].hashCode();
+        // int deepHash = Arrays.deepHashCode(boardArray);
+        int hashModulo = Math.abs(hash) % MAXHASH;
+        // System.out.println("Hashcode = " + hash + "\tModHashcode = " + hashModular);
+        System.out.println("Deep Hash = " + hash + "\tHashcode = " + hashModulo);
+        return(hashModulo);
+    }
+    
+    public void storeHashCode(int hashCode) {
+        gameHashList.add(hashCode);
+        // hashArray[hashCode] += 1;
+    }
+    
+    public void saveGameHashList() {
+        for (int hashCode:gameHashList) {
+            hashArray[hashCode] += 1;
+        }
+    }
+    
+    public void resetGameHashList() {
+        gameHashList.clear();
+    }
+    
+    public void printHashArray() {
+        for (int i = 0; i < MAXHASH; i++) {
+            if (hashArray[i] != 0)
+                System.out.println("Key " + i + " " + hashArray[i]);
+        }
+    }
+    
+    public Move findBestMove(Symbols symbol) {
+        
+        Move move = new Move(0,0);
+        int bestMove = -1;
+        int bestRow = -1;
+        int bestColumn = -1;
+           
+        int hashCode;
+        for (int row = 0; row < RC_SIZE; row++) {
+            for (int col = 0; col < RC_SIZE; col++) {
+                move.row = row;
+                move.column = col;
+                if (isMoveValid(move)) {
+                    boardArray[row][col] = symbol;  // set box updates move counter
+                    hashCode = getHashCode();
+                    System.out.println("   Move Value - Row " + row + " Col " + col + " = " + hashArray[hashCode]);
+                    boardArray[row][col] = Symbols.b;
+                    if (hashArray[hashCode] > bestMove) {
+                        bestRow = row;
+                        bestColumn = col;
+                        bestMove = hashArray[hashCode];
+                    }
+                }
+            }
+        }
+        assert bestMove == -1 : "findBestMove - NO valid move";
+        move.row = bestRow;
+        move.column = bestColumn;
+        return (move);
     }
 }

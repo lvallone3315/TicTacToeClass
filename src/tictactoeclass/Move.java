@@ -24,7 +24,7 @@ public class Move {
         row = r;
         column = c;
         numInstances++;
-        System.out.println("Move instance constructed: " + numInstances);
+        // System.out.println("Move instance constructed: " + numInstances);
     }
     
     public String toString() {
