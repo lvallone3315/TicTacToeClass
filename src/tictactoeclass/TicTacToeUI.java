@@ -24,11 +24,11 @@ import tictactoeclass.Board.Symbols;
  * TicTacToeUI class
  *      Handles all interface with user + game play logic
  *   Constructor:
- *     @param board - instance of board class, already initialized
- *     @param player1 - instance of a player, already initialized
- *     @param player2 - 2nd player instance, already initialized
+ *     param board - instance of board class, already initialized
+ *     param player1 - instance of a player, already initialized
+ *     param player2 - 2nd player instance, already initialized
  * <P>
- *    sets up buttons including boxes & reset game <br>
+ *    sets up buttons including boxes and reset game <br>
  *    sets up user message text area (win, loss, next to play, errors) <br>
  *    initializes game board (board class) <br>
  *    sets up listeners for user input <br>
@@ -44,7 +44,7 @@ import tictactoeclass.Board.Symbols;
  * <P>
  * Old console methods <br>
  *   drawBoard(Board)   draws board on console screen, retrieves values from Board <br>
- *   getMove()          returns user move, row & column (automates moves) <br>
+ *   getMove()          returns user move, row and column (automates moves) <br>
  *
  * @author leev
  */
@@ -150,11 +150,10 @@ public class TicTacToeUI extends JFrame implements ActionListener {
     
     /**
      * labelButton() label button with string
-     * @args
-     *   row - button row
-     *   col - button column
-     *   text - string for button label
-     *   color - <optional> JSwing text color (default Color.black)
+     * @param row - button row
+     * @param col - button column
+     * @param text - string for button label
+     *   color - [optional] JSwing text color (default Color.black)
      */
     public void labelButton(int row, int col, String text) {
         labelButton(row, col, text, Color.black);
@@ -257,7 +256,7 @@ public class TicTacToeUI extends JFrame implements ActionListener {
      * if valid <br>
      *   updates box in board class <br>
      *   checks win or draw on this move <br>
-     *   toggles player & <br>
+     *   toggles player and <br>
      *   updates user message display (win, draw, next to play, errors)
      * 
      */
@@ -315,7 +314,7 @@ public class TicTacToeUI extends JFrame implements ActionListener {
     /**
      * methods below used for console text version of the game
      *   drawboard draws a text version of board on console
-     *   getMove creates a random move & returns it to caller
+     *   getMove creates a random move and returns it to caller
     */
     public void drawBoard(Board board) {
         for (int row = 0; row < 3; row++){

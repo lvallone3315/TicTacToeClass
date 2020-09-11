@@ -12,7 +12,7 @@ import tictactoeclass.Board.Symbols;
 /**
  * Player class <br>
  *   Tracks players <br>
- *   Initially supports players name & symbol (text) <br>
+ *   Initially supports players name and symbol (text) <br>
  * <P>
  *  getName()   returns player's name <br>
  *  setName()   stores player's name <br>
@@ -20,7 +20,7 @@ import tictactoeclass.Board.Symbols;
  * <P>
  * Includes a unit testing method "playerTest" <br>
  *   which opens up a dialog box, allows tester to enter player name, <br>
- *   prints class instance variable contents & loops until "exit" entered
+ *   prints class instance variable contents and loops until "exit" entered
  * @author leev
  */
 public class Player {

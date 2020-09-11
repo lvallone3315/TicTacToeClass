@@ -10,7 +10,7 @@ package tictactoeclass;
  *   Board class <br>
  *    Defines enum for X and O, regardless of actual text symbols used <br>
  *    keeps track of boxes played <br>
- *    implements methods for resetting board, getting & setting box contents <br>
+ *    implements methods for resetting board, getting and setting box contents <br>
  *  <P>
  *  getBox (row, column)          returns contents of a box <br>
  *  setBox (row, column, symbol)  enters symbol into box <br>
@@ -18,15 +18,15 @@ package tictactoeclass;
  *  resetBoard ()                 clears board <br>
  *  isWinner()                    checks if specified symbol has won <br>
  *    assumes calling routine only asks about a specific player
- *  isMoveValid()        checks if row & column within range & box empty <br>
+ *  isMoveValid()        checks if row and column within range and box empty <br>
  *  getWinningBoxes()    returns boxes with winning line for display <br>
  * 
  * 4-October:  Clean-up
- *   added variables for gameOver & constants for board size
+ *   added variables for gameOver and constants for board size
  *   isGameOver() - moved here (ie winner or 9 moves - ie draw)
  *   isDraw() - check if 9 moves (9 = a CONSTANT)
  *   starting moving towards parameterizing board size (e.g. RC_SIZE)
- *     but, win check & handling needs more thought & work
+ *     but, win check and handling needs more thought and work
  *  Author: Lee
  * 
  */
@@ -82,7 +82,7 @@ public class Board {
      * isGameOver tracks if a winner OR draw occurred
      *   could ignore the draw (all boxes filled), so no valid moves
      *   but for now - check for move
-     * @return 
+     * @return true = game over
      */
     public Boolean isGameOver() {
         if (isDraw() || (gameOver == true))

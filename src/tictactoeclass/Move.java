@@ -7,10 +7,10 @@ package tictactoeclass;
 
 /**
  *   Move class <br>
- * creates a structure with row & column <br>
- * used in routines to return a row & column <br>
+ * creates a structure with row and column <br>
+ * used in routines to return a row and column <br>
  * <P>
- * Opportunity: change all references to row & column to use a "move" object
+ * Opportunity: change all references to row and column to use a "move" object
  *
  * @author leev
  */

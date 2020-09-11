@@ -24,7 +24,7 @@ import tictactoeclass.Board.Symbols;
  *   Two players take turns, choices via JButtons on frame <br>
  *   Option to restart game at any time <br>
  * <P>
- * creates two player objects & a board object <br>
+ * creates two player objects and a board object <br>
  * initializes GUI and relinquishes control to GUI <br>
  * also includes comments with original design pseudo-code
  * <P>
@@ -39,7 +39,7 @@ public class TicTacToeClass {
      * Currently: no command line arguments
      */
     
-    static final String VERSION = "v0.2";
+    static final String VERSION = "v0.2.1";
     
     public static void main(String[] args) throws InterruptedException {
         
