@@ -272,10 +272,12 @@ public class TicTacToeUI extends JFrame implements ActionListener {
                     nextToPlay.getPlayerName());
             return;  // invalid move, let user repeat
         }
-        else {
+        else {  // valid move
             guiBoard.setBox(move.row, move.column, nextToPlay.getPlayerSymbol());
             Symbols symbol = nextToPlay.getPlayerSymbol();
             labelButton(row,column,symbol.name());
+            move.SetMovePlayerSymbol(symbol);
+            move.MoveToCSV();
             drawBoard(guiBoard);
         }
                     // check if winner or draw
