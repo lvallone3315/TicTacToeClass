@@ -22,9 +22,9 @@ import tictactoeclass.Board.Symbols;
  * @author leev
  */
 public class Move {
-    public int row;
-    public int column;
-    public Symbols playerSymbol;
+    private int row;
+    private int column;
+    private Symbols playerSymbol;
     
     static int numInstances; // # of move structures created & not freed
     static final boolean MOVE_DEBUG = false;  // debug info to console
@@ -43,11 +43,26 @@ public class Move {
         }
     }
     
-        // change (or add) playerSymbol to move
-    public void SetMovePlayerSymbol (Symbols s) {
+        // change (or add) playerSymbol to move instance
+    public void setMovePlayerSymbol (Symbols s) {
         playerSymbol = s;
     }
     
+    
+    //  Getter methods for row, column & player symbol
+    public int getRow() {
+        return row;
+    }
+    
+    public int getColumn() {
+        return column;
+    }
+    
+    public Symbols getSymbol() {
+        return playerSymbol;
+    }
+    
+    // return current instance details as a string
     public String toString() {
         String returnString = "Row: "+ this.row + "\tColumn: " + this.column +
                 "\tSymbol: " + this.playerSymbol;

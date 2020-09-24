@@ -268,7 +268,7 @@ public class TicTacToeUI extends JFrame implements ActionListener {
         if (guiBoard.isGameOver()) {
             return;  // game over, do not process
         }
-        Move move = new Move(row,column);
+        Move move = new Move(row,column,nextToPlay.getPlayerSymbol());
         // print move to console
         move.printMove();
         
@@ -280,13 +280,13 @@ public class TicTacToeUI extends JFrame implements ActionListener {
             return;  // invalid move, let user repeat
         }
         else {
-            guiBoard.setBox(move.row, move.column, nextToPlay.getPlayerSymbol());
+            guiBoard.setBox(move);
             Symbols symbol = nextToPlay.getPlayerSymbol();
             labelButton(row,column,symbol.name());
             drawBoard(guiBoard);
         }
                     // check if winner or draw
-        if (guiBoard.isWinner (move,nextToPlay.getPlayerSymbol())) {
+        if (guiBoard.isWinner (nextToPlay.getPlayerSymbol())) {
             System.out.println("Winner: " + nextToPlay.getPlayerName());
             printUserMessage("WINNER!: " + nextToPlay.getPlayerName());
             
@@ -294,9 +294,9 @@ public class TicTacToeUI extends JFrame implements ActionListener {
               //   should be a separate private method
               //   separate = isolates strategy to show winning boxes
             Move[] winningBoxes = guiBoard.getWinningBoxes();
-            labelButton(winningBoxes[0].row, winningBoxes[0].column, Color.blue);
-            labelButton(winningBoxes[1].row, winningBoxes[1].column, Color.blue);
-            labelButton(winningBoxes[2].row, winningBoxes[2].column, Color.blue);
+            labelButton(winningBoxes[0].getRow(), winningBoxes[0].getColumn(), Color.blue);
+            labelButton(winningBoxes[1].getRow(), winningBoxes[1].getColumn(), Color.blue);
+            labelButton(winningBoxes[2].getRow(), winningBoxes[2].getColumn(), Color.blue);
             
         }
         else if (guiBoard.isDraw()) {
@@ -333,6 +333,10 @@ public class TicTacToeUI extends JFrame implements ActionListener {
         System.out.println();
     }
     
+    /**
+     * Get a random move - currently not used
+     * @return a randomly generated move
+     */
     public Move getMove() {
         Random rand = new Random(); 
         int row = rand.nextInt(3); 
