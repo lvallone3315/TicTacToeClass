@@ -232,6 +232,7 @@ public class TicTacToeUI extends JFrame implements ActionListener {
                 
                 // playGame() currently used to play button push           
                 // drop is prototype for dual thread synchronization
+                // ToDo: note - 2nd Move instance created for thread proto
 
                 if (buttonRow != INVALID) {
                     drop.put(new Move(buttonRow, buttonColumn));
@@ -252,6 +253,9 @@ public class TicTacToeUI extends JFrame implements ActionListener {
      * @param row - row # of box selected 0-2 <br>
      * @param column - column # of box 0-2 <br>
      * <P>
+     * PreCondition: nextToPlay points to player entering current move
+     * PostCondition (if valid move): nextToPlay points to other player
+     * 
      * validates move ... <br>
      * if valid <br>
      *   updates box in board class <br>
@@ -265,9 +269,12 @@ public class TicTacToeUI extends JFrame implements ActionListener {
             return;  // game over, do not process
         }
         Move move = new Move(row,column);
+        // print move to console
+        move.printMove();
+        
+        // if invalid move - print to both console GUI
         if (!guiBoard.isMoveValid(move)) {
             printUserError("Invalid move");
-            move.printMove();
             printUserMessage("Invalid move" + 
                     nextToPlay.getPlayerName());
             return;  // invalid move, let user repeat
