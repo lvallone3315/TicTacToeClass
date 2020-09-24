@@ -67,6 +67,13 @@ public class Board {
         moveCounter++;
     }
     
+    // Overload setBox to accept move isntance (ie setBox(Move playerMove)
+    //   calls setBox() with row, column and player symbol
+    public void setBox(Move playerMove) {
+        setBox(playerMove.getRow(), playerMove.getColumn(),
+                playerMove.getSymbol());
+    }
+    
     // resetBoard ()                 clears board
     public void resetBoard(){
         for (int row = 0; row < RC_SIZE; row++){
@@ -105,7 +112,19 @@ public class Board {
             return false;
     }
     
-    public Boolean isWinner(Move move, Symbols symbol) {
+    /**
+     * isWinner() checks rows, columns and diag for 3 in a row
+     * 
+     * @param symbol - player symbol being checked if achieved 3 in a row
+     * 
+     * If player won
+     *   winArray[] updated with winning cells (each cell is a Move structure)
+     * @return true if player won, false if not
+     * 
+     * ToDo: refactor with more efficient checks &/or remove duplicate code
+     * ToDo: remove hardcoding of array size (winArray[])
+     */
+    public Boolean isWinner(Symbols symbol) {
         int row, col;
         // check row winner
         for (row = 0; row < RC_SIZE; row++) {
@@ -115,9 +134,9 @@ public class Board {
                 }
             }
             if (col == RC_SIZE) {  // means row winner
-                winArray[0] = new Move(row, 0);
-                winArray[1] = new Move(row, 1);
-                winArray[2] = new Move(row, 2);
+                winArray[0] = new Move(row, 0, symbol);
+                winArray[1] = new Move(row, 1, symbol);
+                winArray[2] = new Move(row, 2, symbol);
                 gameOver = true;
             }
         }
@@ -128,49 +147,64 @@ public class Board {
                     break;
                 }
             }
-            if (row == RC_SIZE) {
-                winArray[0] = new Move(0, col);
-                winArray[1] = new Move(1, col);
-                winArray[2] = new Move(2, col);
+            if (row == RC_SIZE) {  // column winner
+                winArray[0] = new Move(0, col, symbol);
+                winArray[1] = new Move(1, col, symbol);
+                winArray[2] = new Move(2, col, symbol);
                 gameOver = true;  // column winner
             }
         }
         if ((boardArray[0][0] == symbol)  &&
                 (boardArray[1][1] == symbol) &&
                 (boardArray[2][2] == symbol)) {
-            winArray[0] = new Move(0, 0);
-            winArray[1] = new Move(1, 1);
-            winArray[2] = new Move(2, 2);
+            // Diagonal winner
+            winArray[0] = new Move(0, 0, symbol);
+            winArray[1] = new Move(1, 1, symbol);
+            winArray[2] = new Move(2, 2, symbol);
             gameOver = true;  // back diag winner
         }
         if ((boardArray[0][2] == symbol)  &&
                 (boardArray[1][1] == symbol) &&
                 (boardArray[2][0] == symbol)) {
-            winArray[0] = new Move(0, 2);
-            winArray[1] = new Move(1, 1);
-            winArray[2] = new Move(2, 0);
+            // other diagonal winner
+            winArray[0] = new Move(0, 2, symbol);
+            winArray[1] = new Move(1, 1, symbol);
+            winArray[2] = new Move(2, 0, symbol);
             gameOver = true;  // forward diag winner
         }
         System.out.println(this);  // print instance info to console
         return gameOver;   // if not set true above, then should be false
     }
     
+    /**
+     * isMoveValid() 
+     *   checks if row and columns in range of gridsize (e.g. 0-2)
+     *   checks if selected cell is empty
+     * @param move - row and column to be validated
+     * @return - true if move valid, false otherwise
+     */
     public Boolean isMoveValid(Move move) {
         // valid row & column
+        int row = move.getRow();
+        int column = move.getColumn();
         //   since start at 0, array index max is size minus one
-        if ((move.row < 0) || (move.row > RC_SIZE-1)) {
+        if ((row < 0) || (row > RC_SIZE-1)) {
             return false;
         }
-        else if ((move.column < 0) || (move.column > RC_SIZE-1)) {
+        else if ((column < 0) || (column > RC_SIZE-1)) {
             return false;
         }
         // check if selected box is blank
-        if (boardArray[move.row][move.column] != Symbols.b) {
+        if (boardArray[row][column] != Symbols.b) {
             return false;
         }
         return true;
     }
     
+    /**
+     * 
+     * @return  array[RC_SIZE] of winning boxes each of type Move
+     */
     public Move[] getWinningBoxes() {
         return winArray;
     }
