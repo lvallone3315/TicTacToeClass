@@ -39,7 +39,7 @@ public class TicTacToeClass {
      * Currently: no command line arguments
      */
     
-    static final String VERSION = "v0.2.1";
+    static final String VERSION = "v0.3.1";
     
     public static void main(String[] args) throws InterruptedException {
         
@@ -78,7 +78,7 @@ public class TicTacToeClass {
         
         while (true) {
             Move move = drop.take();
-            System.out.format("MESSAGE RECEIVED: %d %d%n", move.row, move.column);
+            System.out.format("MESSAGE RECEIVED: %d %d%n", move.getRow(), move.getColumn());
             try {
                 Thread.sleep(100);
             } catch (InterruptedException e) {}
