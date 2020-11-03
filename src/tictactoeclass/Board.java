@@ -44,6 +44,7 @@ public class Board {
     private Boolean gameOver = false;
     private int moveCounter = 0;
     
+    
     Board () {
         System.out.println("Board constructor");
         this.resetBoard();
