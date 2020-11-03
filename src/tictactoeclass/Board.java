@@ -44,6 +44,10 @@ public class Board {
     private Boolean gameOver = false;
     private int moveCounter = 0;
     
+    // Save File instance pointer
+    // leave saveTestFile in for now (test only), ToDo delete
+    private FileSave saveFile = new FileSave();
+    private FileSave saveTestFile = new FileSave("eenyMeenyMineyMoe.txt");
     
     Board () {
         System.out.println("Board constructor");
