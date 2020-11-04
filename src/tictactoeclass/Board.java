@@ -211,6 +211,7 @@ public class Board {
      * @return  array[RC_SIZE] of winning boxes each of type Move
      */
     public Move[] getWinningBoxes() {
+        saveFile.writeToSaveFile("Game Over");
         return winArray;
     }
     

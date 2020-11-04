@@ -1,5 +1,9 @@
 package tictactoeclass;
 
+import java.io.FileWriter;
+import java.io.BufferedWriter;
+import java.io.IOException;
+
 /**
  *
  * @author lvall
@@ -8,7 +12,7 @@ package tictactoeclass;
  * 
  * Initial draft requirements
  * 
- *  File name hardcoded (for now) as "TicTacToeGameLog.txt"
+ *  Default File name hardcoded (for now) as "TicTacToeGameLog.txt"
  *   File contents stored as text
  *   If file doesn't exist, file is created and opened for writing
  *   Opening existing files in append mode
@@ -22,12 +26,74 @@ package tictactoeclass;
  */
 public class FileSave {
     private static final String DEFAULT_FILE_NAME = "TicTacToeGameLog.txt";
+    
+    // Instance variables
+    String saveFileName;
+    FileWriter filePointer;
+    BufferedWriter bufferedWritePointer;
 
+    // Constructors - two flavors
+    //   default file name & user specified file name
+    //   if file cannot be opened for writing, set filePointer = null
     public FileSave () {        
         this(DEFAULT_FILE_NAME);
     } 
     public FileSave (String fileName) {
         System.out.println("FileSave constructor called: " + fileName);
+        this.openFile(fileName);
+        saveFileName = fileName;
     }
-
+    
+    /**
+     * Open named file for creation/append
+     *    Sets filePointer to File & bufferedWritePointer to file position or
+     *    null if cannot open file
+     * @param fileName - file name (Sting) to open for appending
+     * @return FileWriter - pointer to open file
+     */
+    private FileWriter openFile(String fileName) {
+        try (
+                FileWriter fp = new FileWriter(fileName, true);
+                ) {
+            filePointer = fp;
+        }
+        catch (IOException e) {
+            e.printStackTrace();
+            filePointer = null;
+        }
+        return (filePointer);
+    }
+    
+    /**
+     * Check if save file is currently/successfully opened
+     * @return true if file is open
+     */
+    public Boolean isSaveFileOpen() {
+        if (filePointer == null)
+            return false;
+        else
+            return true;
+    }
+    
+    /**
+     * Opens file for append, writes data & closes stream
+     *   ToDo: Would like to not open & close every time, but not sure how to yet
+     * @param data - string to be written to save File (incl /n if desired)
+     * @throws IOException - if file previously ok to open, but write error now
+     */
+    public void writeToSaveFile(String data) throws IOException {
+        if (filePointer != null) {
+            try {
+            filePointer = new FileWriter(saveFileName, true);
+            bufferedWritePointer = new BufferedWriter(filePointer);
+            bufferedWritePointer.write(data);
+            }
+            catch (IOException e) {
+                e.printStackTrace();
+            }
+            finally {
+                bufferedWritePointer.close();
+            }
+        }
+    }
 }
