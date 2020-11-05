@@ -69,6 +69,11 @@ public class TicTacToeUI extends JFrame implements ActionListener {
     Player guiPlayer1;
     Player guiPlayer2;
     Player nextToPlay;
+    
+    // Save File instance pointer for saving game data (not UI related)
+    //   Creates/Opens save file
+    //   on game over, retrieves game data from Board class & saves to file
+    private FileSave saveFile = new FileSave();
 
     
     // Constructor - see above Javadoc for details
@@ -298,10 +303,15 @@ public class TicTacToeUI extends JFrame implements ActionListener {
             labelButton(winningBoxes[1].getRow(), winningBoxes[1].getColumn(), Color.blue);
             labelButton(winningBoxes[2].getRow(), winningBoxes[2].getColumn(), Color.blue);
             
+              // save game to log file
+            saveFile.writeToSaveFile(guiBoard.saveGame());
+            
         }
         else if (guiBoard.isDraw()) {
             System.out.println("Draw");
             printUserMessage("It's a DRAW!");
+                // save game to log file
+            saveFile.writeToSaveFile(guiBoard.saveGame());
         }
         // no closing else
 

@@ -81,7 +81,7 @@ public class FileSave {
      * @param data - string to be written to save File (incl /n if desired)
      * @throws IOException - if file previously ok to open, but write error now
      */
-    public void writeToSaveFile(String data) throws IOException {
+    public void writeToSaveFile(String data) {
         if (filePointer != null) {
             try {
             filePointer = new FileWriter(saveFileName, true);
@@ -92,7 +92,12 @@ public class FileSave {
                 e.printStackTrace();
             }
             finally {
-                bufferedWritePointer.close();
+                try {
+                    bufferedWritePointer.close();
+                }
+                catch (IOException ec) {
+                    ;  // catch IOException - but do nothing
+                }
             }
         }
     }

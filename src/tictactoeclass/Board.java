@@ -44,10 +44,8 @@ public class Board {
     private Boolean gameOver = false;
     private int moveCounter = 0;
     
-    // Save File instance pointer
-    // leave saveTestFile in for now (test only), ToDo delete
-    private FileSave saveFile = new FileSave();
-    private FileSave saveTestFile = new FileSave("eenyMeenyMineyMoe.txt");
+    private String[] neuralNetGameLog = new String[NUM_BOXES];
+    private Symbols lastWinner;
     
     Board () {
         System.out.println("Board constructor");
@@ -69,6 +67,7 @@ public class Board {
             "setBox: box NOT empty" + "\trow: " + row + "\tcol: " + column;
         // if no assert, valid move
         boardArray[row][column] = symbol;
+        saveBoard();   // uses moveCounter as index, must call before
         moveCounter++;
     }
     
@@ -88,6 +87,7 @@ public class Board {
         }
         gameOver = false;
         moveCounter = 0;
+        lastWinner = Symbols.b;  // clear out previous winner info
     }
     
     /**
@@ -178,6 +178,9 @@ public class Board {
             gameOver = true;  // forward diag winner
         }
         System.out.println(this);  // print instance info to console
+        if (gameOver) {
+            lastWinner = symbol;
+        }
         return gameOver;   // if not set true above, then should be false
     }
     
@@ -209,10 +212,78 @@ public class Board {
     /**
      * 
      * @return  array[RC_SIZE] of winning boxes each of type Move
+     * ToDo: update to print game board
      */
     public Move[] getWinningBoxes() {
-        saveFile.writeToSaveFile("Game Over");
         return winArray;
+    }
+    
+    /**
+     * saveBoard - save board for Neural Net data
+     *   save to neuralNetGameLog[moveCounter]
+     *   format is [cell 0:0, cell 0:1, cell 0:2], [1:0, 1:1, 1:2], ...
+     *   X saved as -1, b as 0, O as 1
+     *   ToDo: braindead implementation - refactor later
+     * @return 
+     */
+    private void saveBoard() {
+        int row, col;
+
+        neuralNetGameLog[moveCounter] = "[";
+        for (row = 0; row < RC_SIZE; row++) {
+            neuralNetGameLog[moveCounter] += "[";
+            for (col = 0; col < RC_SIZE; col++) {
+                
+                String cell;
+                switch (boardArray[row][col]) {
+                    case X:
+                        cell = "-1";
+                        break;
+
+                    case O:
+                        cell = "1";
+                        break;
+                    case b:
+                    default:
+                        cell = "0";
+                        break;
+                }
+                neuralNetGameLog[moveCounter] += cell;
+                if (col != RC_SIZE-1) {
+                    neuralNetGameLog[moveCounter] += ",";
+                }
+            }
+            neuralNetGameLog[moveCounter] += "]";
+            if (row != RC_SIZE-1) {
+                neuralNetGameLog[moveCounter] += ",";
+            }
+        }
+        neuralNetGameLog[moveCounter] += "]";
+    }
+    
+    public String saveGame() {
+        int move;
+        String lastWinnerString;
+        switch (lastWinner) {
+            case X:
+                lastWinnerString = "-1";
+                break;
+            case O:
+                lastWinnerString = "1";
+                break;
+            case b:
+            default:
+                lastWinnerString = "0";  
+        }
+        String fullGameLog = "[";
+        for (move = 0; move < moveCounter; move++) {
+            fullGameLog += "(" + lastWinnerString + ", ";
+            fullGameLog += neuralNetGameLog[move];
+            fullGameLog += ")  ";
+        }
+        fullGameLog += "]\n";
+        System.out.println(fullGameLog);
+        return fullGameLog;
     }
     
     public String toString() {
