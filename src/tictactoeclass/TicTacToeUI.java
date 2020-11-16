@@ -68,7 +68,6 @@ public class TicTacToeUI extends JFrame implements ActionListener {
     Board guiBoard;
     Player guiPlayer1;
     Player guiPlayer2;
-    Player nextToPlay;
 
     
     // Constructor - see above Javadoc for details
@@ -79,7 +78,7 @@ public class TicTacToeUI extends JFrame implements ActionListener {
         this.drop = dropInput;
         System.out.println("TicTacToeUI constructor");
             // declare & initialize next to player to make a move
-        nextToPlay = guiPlayer1;    // declare
+        guiBoard.setNextToPlay(guiPlayer1);
         
         /*
          * JFrame uses Border layout
@@ -99,7 +98,7 @@ public class TicTacToeUI extends JFrame implements ActionListener {
         // status messages (top of frame) - player, win/loss/draw, invalid moves
         //   ToDo - get rid of hardcoded sizes (e.g. panel height, font size)
         Panel userMessagePanel = new Panel();
-        userMessage = new JLabel(nextToPlay.getPlayerName() + " turn",JLabel.CENTER);
+        userMessage = new JLabel(guiBoard.getNextToPlay().getPlayerName() + " turn",JLabel.CENTER);
         userMessage.setSize(PANEL_WIDTH,100);
         userMessage.setFont(new Font("Arial", Font.ITALIC, 20));
         userMessage.setHorizontalAlignment(JLabel.CENTER);
@@ -181,7 +180,7 @@ public class TicTacToeUI extends JFrame implements ActionListener {
                 labelButton(row, column, " ", Color.black);
             }
         }
-        userMessage.setText (nextToPlay.getPlayerName() + " turn");
+        userMessage.setText (guiBoard.getNextToPlay().getPlayerName() + " turn");
         // Reset board & moves
         //   assumes Next to Play is already set
         guiBoard.resetBoard();
@@ -268,7 +267,7 @@ public class TicTacToeUI extends JFrame implements ActionListener {
         if (guiBoard.isGameOver()) {
             return;  // game over, do not process
         }
-        Move move = new Move(row,column,nextToPlay.getPlayerSymbol());
+        Move move = new Move(row,column,guiBoard.getNextToPlay().getPlayerSymbol());
         // print move to console
         move.printMove();
         
@@ -276,19 +275,19 @@ public class TicTacToeUI extends JFrame implements ActionListener {
         if (!guiBoard.isMoveValid(move)) {
             printUserError("Invalid move");
             printUserMessage("Invalid move" + 
-                    nextToPlay.getPlayerName());
+                    guiBoard.getNextToPlay().getPlayerName());
             return;  // invalid move, let user repeat
         }
         else {
             guiBoard.setBox(move);
-            Symbols symbol = nextToPlay.getPlayerSymbol();
+            Symbols symbol = guiBoard.getNextToPlay().getPlayerSymbol();
             labelButton(row,column,symbol.name());
             drawBoard(guiBoard);
         }
                     // check if winner or draw
-        if (guiBoard.isWinner (nextToPlay.getPlayerSymbol())) {
-            System.out.println("Winner: " + nextToPlay.getPlayerName());
-            printUserMessage("WINNER!: " + nextToPlay.getPlayerName());
+        if (guiBoard.isWinner (guiBoard.getNextToPlay().getPlayerSymbol())) {
+            System.out.println("Winner: " + guiBoard.getNextToPlay().getPlayerName());
+            printUserMessage("WINNER!: " + guiBoard.getNextToPlay().getPlayerName());
             
               // Board tracks winning boxes, query and change color
               //   should be a separate private method
@@ -306,14 +305,14 @@ public class TicTacToeUI extends JFrame implements ActionListener {
         // no closing else
 
         // switch players & display next turn
-        if (nextToPlay == guiPlayer1)
-            nextToPlay = guiPlayer2;
+        if (guiBoard.getNextToPlay() == guiPlayer1)
+            guiBoard.setNextToPlay(guiPlayer2);
         else {
-            nextToPlay = guiPlayer1;
+            guiBoard.setNextToPlay(guiPlayer1);
         }
         if (!guiBoard.isGameOver()) {
-            System.out.println(nextToPlay.getPlayerName() + " turn");
-            printUserMessage(nextToPlay.getPlayerName() + " turn");
+            System.out.println(guiBoard.getNextToPlay().getPlayerName() + " turn");
+            printUserMessage(guiBoard.getNextToPlay().getPlayerName() + " turn");
         }
         setVisible(true);
     }

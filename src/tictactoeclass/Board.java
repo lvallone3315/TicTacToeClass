@@ -20,6 +20,8 @@ package tictactoeclass;
  *    assumes calling routine only asks about a specific player
  *  isMoveValid()        checks if row and column within range and box empty <br>
  *  getWinningBoxes()    returns boxes with winning line for display <br>
+ *  getNextToPlay()      returns Player whose turn it is
+ *  setNextToPlay(Player) sets next player to play
  * 
  * 4-October:  Clean-up
  *   added variables for gameOver and constants for board size
@@ -43,6 +45,9 @@ public class Board {
     // moveCounter counts valid moves to identify a draw (9 moves, no winner)
     private Boolean gameOver = false;
     private int moveCounter = 0;
+    
+    // Player with next move
+    private Player nextToPlay = null;
     
     // Save File instance pointer
     // leave saveTestFile in for now (test only), ToDo delete
@@ -215,6 +220,22 @@ public class Board {
         return winArray;
     }
     
+    /**
+     * setNextToPlay() - set which player plays next 
+     */
+    public void setNextToPlay(Player player) {
+        nextToPlay = player;
+    }
+    
+    /**
+     * getNextToPlay()
+     * @return player whose turn it is
+     */
+    public Player getNextToPlay() {
+        assert nextToPlay != null: "nextToPlay is null, need to set first";
+        return (nextToPlay);
+    }
+    
     public String toString() {
     // private Move winArray[] = new Move[3];
     // private Symbols[][] boardArray = new Symbols [3][3];
@@ -222,6 +243,8 @@ public class Board {
     // private int moveCounter = 0;
         String returnString = "gameOver: " + gameOver;
         returnString += "\tmoveCounter: " + moveCounter;
+        if (nextToPlay != null)
+            returnString += "\tnextToPlay: " + nextToPlay.getPlayerName();
     // ToDo array printout not quite right yet
         returnString += "\nboardArray: " + boardArray;
         returnString += "\nwinArraay: " + winArray;
