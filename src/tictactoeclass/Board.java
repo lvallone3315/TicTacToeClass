@@ -243,7 +243,7 @@ public class Board {
     // private int moveCounter = 0;
         String returnString = "gameOver: " + gameOver;
         returnString += "\tmoveCounter: " + moveCounter;
-        returnString += "\tnextToPlay: " + nextToPlay.getPlayerName();
+     //  returnString += "\tnextToPlay: " + nextToPlay.getPlayerName();
     // ToDo array printout not quite right yet
         returnString += "\nboardArray: " + boardArray;
         returnString += "\nwinArraay: " + winArray;
