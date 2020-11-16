@@ -20,7 +20,7 @@ package tictactoeclass;
  *    assumes calling routine only asks about a specific player
  *  isMoveValid()        checks if row and column within range and box empty <br>
  *  getWinningBoxes()    returns boxes with winning line for display <br>
- *  getNextToPlay()      returns Player who's turn it is
+ *  getNextToPlay()      returns Player whose turn it is
  *  setNextToPlay(Player) sets next player to play
  * 
  * 4-October:  Clean-up
@@ -243,7 +243,8 @@ public class Board {
     // private int moveCounter = 0;
         String returnString = "gameOver: " + gameOver;
         returnString += "\tmoveCounter: " + moveCounter;
-     //  returnString += "\tnextToPlay: " + nextToPlay.getPlayerName();
+        if (nextToPlay != null)
+            returnString += "\tnextToPlay: " + nextToPlay.getPlayerName();
     // ToDo array printout not quite right yet
         returnString += "\nboardArray: " + boardArray;
         returnString += "\nwinArraay: " + winArray;
