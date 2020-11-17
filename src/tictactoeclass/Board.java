@@ -70,7 +70,7 @@ public class Board {
     
     public void setBox(int row, int column, Symbols symbol) {
         // validate row & column
-        assert (boardArray[row][column] != Symbols.b):
+        assert (boardArray[row][column] == Symbols.b):
             "setBox: box NOT empty" + "\trow: " + row + "\tcol: " + column;
         // if no assert, valid move
         boardArray[row][column] = symbol;
@@ -136,6 +136,7 @@ public class Board {
      */
     public Boolean isWinner(Symbols symbol) {
         int row, col;
+        gameOver = false;
         // check row winner
         for (row = 0; row < RC_SIZE; row++) {
             for (col = 0; col < RC_SIZE; col++) {

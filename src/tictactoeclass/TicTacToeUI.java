@@ -238,7 +238,7 @@ public class TicTacToeUI extends JFrame implements ActionListener {
                     try {
                         Thread.sleep(100);
                     } catch (InterruptedException ev) {}
-                    playGame(buttonRow, buttonColumn);
+                    // playGame(buttonRow, buttonColumn);
                 }
                 else {
                     System.err.println("INVALID ACTION EVENET");
