@@ -70,7 +70,7 @@ public class Board {
     
     public void setBox(int row, int column, Symbols symbol) {
         // validate row & column
-        assert (boardArray[row][column] != Symbols.b):
+        assert (boardArray[row][column] == Symbols.b):
             "setBox: box NOT empty" + "\trow: " + row + "\tcol: " + column;
         // if no assert, valid move
         boardArray[row][column] = symbol;
@@ -136,6 +136,10 @@ public class Board {
      */
     public Boolean isWinner(Symbols symbol) {
         int row, col;
+        
+        // gameOver is stateful, once set, true until game reset
+        // symbolWon returns if the specified player has won (or hasn't won)
+        Boolean symbolWon = false;
         // check row winner
         for (row = 0; row < RC_SIZE; row++) {
             for (col = 0; col < RC_SIZE; col++) {
@@ -148,6 +152,7 @@ public class Board {
                 winArray[1] = new Move(row, 1, symbol);
                 winArray[2] = new Move(row, 2, symbol);
                 gameOver = true;
+                symbolWon = true;
             }
         }
         // check column winner
@@ -162,6 +167,7 @@ public class Board {
                 winArray[1] = new Move(1, col, symbol);
                 winArray[2] = new Move(2, col, symbol);
                 gameOver = true;  // column winner
+                symbolWon = true;
             }
         }
         if ((boardArray[0][0] == symbol)  &&
@@ -172,6 +178,7 @@ public class Board {
             winArray[1] = new Move(1, 1, symbol);
             winArray[2] = new Move(2, 2, symbol);
             gameOver = true;  // back diag winner
+            symbolWon = true;
         }
         if ((boardArray[0][2] == symbol)  &&
                 (boardArray[1][1] == symbol) &&
@@ -181,9 +188,10 @@ public class Board {
             winArray[1] = new Move(1, 1, symbol);
             winArray[2] = new Move(2, 0, symbol);
             gameOver = true;  // forward diag winner
+            symbolWon = true;
         }
         System.out.println(this);  // print instance info to console
-        return gameOver;   // if not set true above, then should be false
+        return symbolWon;   // specified player won/hasn't won
     }
     
     /**
