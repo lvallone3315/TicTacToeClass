@@ -78,7 +78,7 @@ public class TicTacToeUI extends JFrame implements ActionListener {
         this.drop = dropInput;
         System.out.println("TicTacToeUI constructor");
             // declare & initialize next to player to make a move
-        guiBoard.setNextToPlay(guiPlayer1);
+        // guiBoard.setNextToPlay(guiPlayer1);
         
         /*
          * JFrame uses Border layout

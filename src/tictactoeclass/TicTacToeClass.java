@@ -39,7 +39,7 @@ public class TicTacToeClass {
      * Currently: no command line arguments
      */
     
-    static final String VERSION = "v0.3.6";
+    static final String VERSION = "v0.3.7";
     
     public static void main(String[] args) throws InterruptedException {
         
@@ -52,33 +52,38 @@ public class TicTacToeClass {
         // test player class (as an example of a class unit test
         // Player playertest = new Player(Symbols.O);
         // playertest.playerTest();
+        
+               // test message passing from UI
+        Drop drop = new Drop();
 
         /*
          * Initialize objects Players & Board
          */
-        Player player1 = new Player(Symbols.X);
-        Player player2 = new Player(Symbols.O);
-        Board board = new Board();
+        // Player player1 = new Player(Symbols.X);
+        // Player player2 = new Player(Symbols.O);
+        // Board board = new Board();
         
-        // test message passing from UI
-        Drop drop = new Drop();
+ 
         
         /*
          * Initialize GUI, including button listeners
          * Game logic is in the GUI class
         */
-        TicTacToeUI ui = new TicTacToeUI(board, player1, player2, drop);
-        ui.setButtonActionListener();
+        // TicTacToeUI ui = new TicTacToeUI(board, player1, player2, drop);
+        // ui.setButtonActionListener();
 
         // Console version - draw board
         //    verify players set up correctly
-        player1.printPlayer();
-        player2.printPlayer();
-        ui.drawBoard(board);
+        // player1.printPlayer();
+        // player2.printPlayer();
+        // ui.drawBoard(board);
+        
+        PlayGame game = new PlayGame(drop);
         
         while (true) {
             Move move = drop.take();
             System.out.format("MESSAGE RECEIVED: %d %d%n", move.getRow(), move.getColumn());
+            game.playGame(move.getRow(), move.getColumn());
             try {
                 Thread.sleep(100);
             } catch (InterruptedException e) {}

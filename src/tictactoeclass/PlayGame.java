@@ -23,12 +23,13 @@ public class PlayGame {
     PlayGame(Drop mainDropMessageSynch) {
 
         drop = mainDropMessageSynch;
+        board.setNextToPlay(player1);
         
         // Initialize GUI, including button listeners
         // ToDo: delete Game logic in the GUI class
         ui = new TicTacToeUI(board, player1, player2, drop);
         ui.setButtonActionListener();
-        board.setNextToPlay(player1);
+
     }
     
     public void playGame(int row, int column) {
@@ -88,7 +89,7 @@ public class PlayGame {
     
     // ToDo: for JUnit testing - methods to check winner & if a draw
     public Boolean isWinner(Board.Symbols symbol) {
-        System.out.println("Checking win for " + symbol + board.isWinner(symbol));
+        System.out.println("**CHECKING WIN - isWinner(" + symbol + ") - returned" + board.isWinner(symbol));
         return (board.isWinner (symbol));
     }
     public Boolean isDraw() {
