@@ -131,7 +131,7 @@ public class Board {
      *   winArray[] updated with winning cells (each cell is a Move structure)
      * @return true if player won, false if not
      * 
-     * ToDo: refactor with more efficient checks &/or remove duplicate code
+     * ToDo: refactor with more efficient checks and/or remove duplicate code
      * ToDo: remove hardcoding of array size (winArray[])
      */
     public Boolean isWinner(Symbols symbol) {
@@ -230,6 +230,7 @@ public class Board {
     
     /**
      * setNextToPlay() - set which player plays next 
+     * @param player - will have next turn
      */
     public void setNextToPlay(Player player) {
         nextToPlay = player;

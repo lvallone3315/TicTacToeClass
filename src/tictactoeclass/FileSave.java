@@ -22,7 +22,7 @@ import java.io.IOException;
  *   If file opened cannot be opened for writing
  *     print error message on console and ignore all other file operation requests
  *   If read operation fails or reaches end-of-file (EOF) return null
- *   if write operation fails, print error message on console & assert
+ *   if write operation fails, print error message on console and assert
  */
 public class FileSave {
     private static final String DEFAULT_FILE_NAME = "TicTacToeGameLog.txt";
@@ -76,10 +76,9 @@ public class FileSave {
     }
     
     /**
-     * Opens file for append, writes data & closes stream
-     *   ToDo: Would like to not open & close every time, but not sure how to yet
+     * Opens file for append, writes data and closes stream
+     *   ToDo: Would like to not open and close every time, but not sure how to yet
      * @param data - string to be written to save File (incl /n if desired)
-     * @throws IOException - if file previously ok to open, but write error now
      */
     public void writeToSaveFile(String data) {
         if (filePointer != null) {

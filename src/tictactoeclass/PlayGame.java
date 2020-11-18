@@ -45,6 +45,8 @@ public class PlayGame {
      /**
       * playGame - called by actionListener on button (box) click <br>
       * game play logic, move validation, etc. <br>
+      * @param row 
+      * @param column - player move on board
       */
     
     public void playGame(int row, int column) {

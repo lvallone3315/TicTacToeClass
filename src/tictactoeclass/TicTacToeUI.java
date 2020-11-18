@@ -179,7 +179,8 @@ public class TicTacToeUI extends JFrame implements ActionListener {
     /**
      * Error message handlers <br>
      *  printUserError currently only goes to console <br>
-     *  printUserMessage only goes to use window (userMessage area) <br>
+     *  printUserMessage only goes to user window (userMessage area) <br>
+     * @param userError - string to print on console
     */
     public void printUserError (String userError) {
         System.out.println("USER ERROR: " + userError);
@@ -241,6 +242,7 @@ public class TicTacToeUI extends JFrame implements ActionListener {
      * methods below used for console text version of the game
      *   drawboard draws a text version of board on console
      *   getMove creates a random move and returns it to caller
+     * @param board - pointer to board instance to draw
     */
     public void drawBoard(Board board) {
         for (int row = 0; row < 3; row++){
