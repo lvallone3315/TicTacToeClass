@@ -4,16 +4,16 @@ import java.awt.Color;   // Needed for color blue, ToDo refactor & color in UI
 
 /**
  * PlayGame
- *   Everything needed to play a game
- *   Creates two players (player1 and player2)
- *   Creates TicTacToe board
- *   
- * Constructor argument
- *    Drop - dropbox used for message synch between gui thread and calling thread
- * 
- * Designed so game can be played without the gui, using manual passing of moves
+ *   Everything needed to play a game <br>
+ *   Creates two players (player1 and player2) <br>
+ *   Creates TicTacToe board <br>
+ * <P>
+ * Constructor argument <br>
+ *    Drop - dropbox used for message synch between gui thread and calling thread <br>
+ * <P>
+ * Designed so game can be played without the gui, using manual passing of moves <br>
  *   Needed for JUnit testing of game
- * 
+ * <P>
  * @author lvall
  */
 public class PlayGame {
@@ -29,6 +29,23 @@ public class PlayGame {
         //   ToDo: embed message synch in PlayGame class & call as a forked thread
         private Drop drop; 
         private TicTacToeUI ui;
+        
+    /**
+     *   playGame - process move selection <br>
+     * @param row - row # of box selected 0-2 <br>
+     * @param column - column # of box 0-2 <br>
+     * <P>
+     * PreCondition: nextToPlay points to player entering current move
+     * PostCondition (if valid move): nextToPlay points to other player
+     * 
+     * validates move ... <br>
+     * if valid <br>
+     *   updates box in board class <br>
+     *   checks win or draw on this move <br>
+     *   toggles player and <br>
+     *   updates user message display (win, draw, next to play, errors)
+     * 
+     */
 
     PlayGame(Drop mainDropMessageSynch) {
 
@@ -44,10 +61,12 @@ public class PlayGame {
     
      /**
       * playGame - called by actionListener on button (box) click <br>
-      * game play logic, move validation, etc. <br>
+      *   game play logic, move validation, etc. <br>
       * @param row 
       * @param column - player move on board
       */
+    
+    
     
     public void playGame(int row, int column) {
         if (board.isGameOver()) {
@@ -104,14 +123,30 @@ public class PlayGame {
         ui.setVisible(true);
     }
     
-    // ToDo: for JUnit testing - methods to check winner & if a draw
+    // Following routines are for JUnit testing
+    
+    /**
+     * For Junit testing - true if player (represented by symbol won)
+     * @param symbol - player symbol to check
+     * @return - true, if specified player won, otherwise false
+     */
     public Boolean isWinner(Board.Symbols symbol) {
         System.out.println("**CHECKING WIN - isWinner(" + symbol + ") - returned" + board.isWinner(symbol));
         return (board.isWinner (symbol));
     }
+    
+    /**
+     * For Junit testing - true if game is a draw
+     * @return - true if game ended as a draw, otherwise false
+     */
     public Boolean isDraw() {
         return (board.isDraw ());
     }
+    
+    /**
+     * For Junit testing - reset board, also resets GUI
+     * ToDo - if no GUI, call board reset directly, don't call UI
+     */
     public void resetBoard() {
         ui.resetGame();
     }
