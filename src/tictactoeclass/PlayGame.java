@@ -30,22 +30,7 @@ public class PlayGame {
         private Drop drop; 
         private TicTacToeUI ui;
         
-    /**
-     *   playGame - process move selection <br>
-     * @param row - row # of box selected 0-2 <br>
-     * @param column - column # of box 0-2 <br>
-     * <P>
-     * PreCondition: nextToPlay points to player entering current move
-     * PostCondition (if valid move): nextToPlay points to other player
-     * 
-     * validates move ... <br>
-     * if valid <br>
-     *   updates box in board class <br>
-     *   checks win or draw on this move <br>
-     *   toggles player and <br>
-     *   updates user message display (win, draw, next to play, errors)
-     * 
-     */
+
 
     PlayGame(Drop mainDropMessageSynch) {
 
@@ -59,13 +44,24 @@ public class PlayGame {
 
     }
     
-     /**
-      * playGame - called by actionListener on button (box) click <br>
-      *   game play logic, move validation, etc. <br>
-      * @param row 
-      * @param column - player move on board
-      */
-    
+    /**
+     *   playGame - process player move selection <br>
+     *     called by actionListener on button click, or <br>
+     *     by JUnit tests (bypassing main() ) <br>
+     * @param row - row # of box selected 0-2 <br>
+     * @param column - column # of box 0-2 <br>
+     * <P>
+     * PreCondition: nextToPlay (board instance) points to player entering current move <br>
+     * PostCondition (if valid move): nextToPlay points to other player
+     * <P>
+     * validates move ... <br>
+     * if valid <br>
+     *   updates box in board class <br>
+     *   checks win or draw on this move <br>
+     *   toggles player and <br>
+     *   updates user message display (win, draw, next to play, errors)
+     * 
+     */
     
     
     public void playGame(int row, int column) {
@@ -126,7 +122,7 @@ public class PlayGame {
     // Following routines are for JUnit testing
     
     /**
-     * For Junit testing - true if player (represented by symbol won)
+     * For Junit testing - true if player (represented by symbol) won
      * @param symbol - player symbol to check
      * @return - true, if specified player won, otherwise false
      */
@@ -144,7 +140,7 @@ public class PlayGame {
     }
     
     /**
-     * For Junit testing - reset board, also resets GUI
+     * For Junit testing - reset board, also resets GUI <br>
      * ToDo - if no GUI, call board reset directly, don't call UI
      */
     public void resetBoard() {
