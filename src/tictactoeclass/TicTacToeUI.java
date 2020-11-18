@@ -22,11 +22,10 @@ import tictactoeclass.Board.Symbols;
 
 /**
  * TicTacToeUI class
- *      Handles all interface with user + game play logic
+ *      Handles all interface with user
  *   Constructor:
  *     param board - instance of board class, already initialized
- *     param player1 - instance of a player, already initialized
- *     param player2 - 2nd player instance, already initialized
+ *     param dropInput - instance of message synchronizer, msg between threads
  * <P>
  *    sets up buttons including boxes and reset game <br>
  *    sets up user message text area (win, loss, next to play, errors) <br>
@@ -35,8 +34,6 @@ import tictactoeclass.Board.Symbols;
  * <P>
  * Other methods <br>
  *   resetGame - clears GUI entries, and resets board in board class <br>
- *   playGame - called by actionListener on button (box) click <br>
- *     game play logic, move validation, etc. <br>
  * <P>
  * ToDo <br>
  *   Refactor board size to be variable
@@ -62,20 +59,13 @@ public class TicTacToeUI extends JFrame implements ActionListener {
     JLabel userMessage;
     
     private Drop drop;
-    
-    // global pointers to board & player instances
-    //   nextToPlay = player whose turn is next
     Board guiBoard;
-    Player guiPlayer1;
-    Player guiPlayer2;
-
     
     // Constructor - see above Javadoc for details
-    TicTacToeUI(Board board, Player player1, Player player2, Drop dropInput) {
+    TicTacToeUI(Board board, Drop dropInput) {
         guiBoard = board;
-        guiPlayer1 = player1;
-        guiPlayer2 = player2;
         this.drop = dropInput;
+        
         System.out.println("TicTacToeUI constructor");
             // declare & initialize next to player to make a move
         // guiBoard.setNextToPlay(guiPlayer1);
@@ -238,7 +228,6 @@ public class TicTacToeUI extends JFrame implements ActionListener {
                     try {
                         Thread.sleep(100);
                     } catch (InterruptedException ev) {}
-                    // playGame(buttonRow, buttonColumn);
                 }
                 else {
                     System.err.println("INVALID ACTION EVENET");
@@ -247,75 +236,6 @@ public class TicTacToeUI extends JFrame implements ActionListener {
         }
     }
     
-    /**
-     *   playGame - process move selection <br>
-     * @param row - row # of box selected 0-2 <br>
-     * @param column - column # of box 0-2 <br>
-     * <P>
-     * PreCondition: nextToPlay points to player entering current move
-     * PostCondition (if valid move): nextToPlay points to other player
-     * 
-     * validates move ... <br>
-     * if valid <br>
-     *   updates box in board class <br>
-     *   checks win or draw on this move <br>
-     *   toggles player and <br>
-     *   updates user message display (win, draw, next to play, errors)
-     * 
-     */
-    public void playGame(int row, int column) {
-        if (guiBoard.isGameOver()) {
-            return;  // game over, do not process
-        }
-        Move move = new Move(row,column,guiBoard.getNextToPlay().getPlayerSymbol());
-        // print move to console
-        move.printMove();
-        
-        // if invalid move - print to both console GUI
-        if (!guiBoard.isMoveValid(move)) {
-            printUserError("Invalid move");
-            printUserMessage("Invalid move" + 
-                    guiBoard.getNextToPlay().getPlayerName());
-            return;  // invalid move, let user repeat
-        }
-        else {
-            guiBoard.setBox(move);
-            Symbols symbol = guiBoard.getNextToPlay().getPlayerSymbol();
-            labelButton(row,column,symbol.name());
-            drawBoard(guiBoard);
-        }
-                    // check if winner or draw
-        if (guiBoard.isWinner (guiBoard.getNextToPlay().getPlayerSymbol())) {
-            System.out.println("Winner: " + guiBoard.getNextToPlay().getPlayerName());
-            printUserMessage("WINNER!: " + guiBoard.getNextToPlay().getPlayerName());
-            
-              // Board tracks winning boxes, query and change color
-              //   should be a separate private method
-              //   separate = isolates strategy to show winning boxes
-            Move[] winningBoxes = guiBoard.getWinningBoxes();
-            labelButton(winningBoxes[0].getRow(), winningBoxes[0].getColumn(), Color.blue);
-            labelButton(winningBoxes[1].getRow(), winningBoxes[1].getColumn(), Color.blue);
-            labelButton(winningBoxes[2].getRow(), winningBoxes[2].getColumn(), Color.blue);
-            
-        }
-        else if (guiBoard.isDraw()) {
-            System.out.println("Draw");
-            printUserMessage("It's a DRAW!");
-        }
-        // no closing else
-
-        // switch players & display next turn
-        if (guiBoard.getNextToPlay() == guiPlayer1)
-            guiBoard.setNextToPlay(guiPlayer2);
-        else {
-            guiBoard.setNextToPlay(guiPlayer1);
-        }
-        if (!guiBoard.isGameOver()) {
-            System.out.println(guiBoard.getNextToPlay().getPlayerName() + " turn");
-            printUserMessage(guiBoard.getNextToPlay().getPlayerName() + " turn");
-        }
-        setVisible(true);
-    }
     
     /**
      * methods below used for console text version of the game

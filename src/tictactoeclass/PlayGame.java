@@ -3,7 +3,17 @@ package tictactoeclass;
 import java.awt.Color;   // Needed for color blue, ToDo refactor & color in UI
 
 /**
- *
+ * PlayGame
+ *   Everything needed to play a game
+ *   Creates two players (player1 and player2)
+ *   Creates TicTacToe board
+ *   
+ * Constructor argument
+ *    Drop - dropbox used for message synch between gui thread and calling thread
+ * 
+ * Designed so game can be played without the gui, using manual passing of moves
+ *   Needed for JUnit testing of game
+ * 
  * @author lvall
  */
 public class PlayGame {
@@ -14,7 +24,7 @@ public class PlayGame {
         private Player player2 = new Player(Board.Symbols.O);
         private Board board = new Board();
         
-        // test message passing from UI
+        // drop used for synchronized message passing from UI
         // initial version - take synchronization handler from main
         //   ToDo: embed message synch in PlayGame class & call as a forked thread
         private Drop drop; 
@@ -23,14 +33,19 @@ public class PlayGame {
     PlayGame(Drop mainDropMessageSynch) {
 
         drop = mainDropMessageSynch;
-        board.setNextToPlay(player1);
+        board.setNextToPlay(player1);  // ToDo - option to configure starting player
         
         // Initialize GUI, including button listeners
-        // ToDo: delete Game logic in the GUI class
-        ui = new TicTacToeUI(board, player1, player2, drop);
+        // ToDo - overload constructor - accept argument specing no GUI
+        ui = new TicTacToeUI(board, drop);
         ui.setButtonActionListener();
 
     }
+    
+     /**
+      * playGame - called by actionListener on button (box) click <br>
+      * game play logic, move validation, etc. <br>
+      */
     
     public void playGame(int row, int column) {
         if (board.isGameOver()) {
@@ -94,5 +109,8 @@ public class PlayGame {
     }
     public Boolean isDraw() {
         return (board.isDraw ());
+    }
+    public void resetBoard() {
+        ui.resetGame();
     }
 }

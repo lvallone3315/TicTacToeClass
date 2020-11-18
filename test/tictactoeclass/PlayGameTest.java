@@ -10,7 +10,6 @@ import org.junit.Before;
 import org.junit.Test;
 import static org.junit.Assert.*;
 
-import tictactoeclass.Board.Symbols;
 
 /**
  *
@@ -61,6 +60,20 @@ public class PlayGameTest {
         play.playGame(2,2);
         assertEquals(play.isWinner(Board.Symbols.X), true);
         assertEquals(play.isWinner(Board.Symbols.O), false);
+        
+        // Reset - Since X won, O will go first
+        //   reverse win check
+        play.resetBoard();
+        assertEquals(play.isWinner(Board.Symbols.X), false);
+        play.playGame(0,0);
+        play.playGame(0,1);
+        play.playGame(1,1);
+        play.playGame(1,0);
+        assertEquals(play.isWinner(Board.Symbols.X), false);
+        assertEquals(play.isWinner(Board.Symbols.O), false);
+        play.playGame(2,2);
+        assertEquals(play.isWinner(Board.Symbols.O), true);
+        assertEquals(play.isWinner(Board.Symbols.X), false);
     }
     
 }

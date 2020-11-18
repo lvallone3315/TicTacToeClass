@@ -1,8 +1,4 @@
 /*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- *
  * Test change for gerrit repository change
  *   https://lvallone3315@review.gerrithub.io/a/lvallone3315/TicTacToeClass"
  * or
@@ -39,7 +35,7 @@ public class TicTacToeClass {
      * Currently: no command line arguments
      */
     
-    static final String VERSION = "v0.3.7";
+    static final String VERSION = "v0.4";
     
     public static void main(String[] args) throws InterruptedException {
         
@@ -49,35 +45,20 @@ public class TicTacToeClass {
         
         System.out.println("Hello Tic Tac Toe");
         
+        // Following replaced by JUnit
         // test player class (as an example of a class unit test
         // Player playertest = new Player(Symbols.O);
         // playertest.playerTest();
         
-               // test message passing from UI
+        
+        //          Core game loop
+        // drop = message passing from GUI - see Drop class
+        // game = all game playing logic
+        //
+        // get move from gui (drop.take)
+        // play the move
+        // keep playing until window closed
         Drop drop = new Drop();
-
-        /*
-         * Initialize objects Players & Board
-         */
-        // Player player1 = new Player(Symbols.X);
-        // Player player2 = new Player(Symbols.O);
-        // Board board = new Board();
-        
- 
-        
-        /*
-         * Initialize GUI, including button listeners
-         * Game logic is in the GUI class
-        */
-        // TicTacToeUI ui = new TicTacToeUI(board, player1, player2, drop);
-        // ui.setButtonActionListener();
-
-        // Console version - draw board
-        //    verify players set up correctly
-        // player1.printPlayer();
-        // player2.printPlayer();
-        // ui.drawBoard(board);
-        
         PlayGame game = new PlayGame(drop);
         
         while (true) {
