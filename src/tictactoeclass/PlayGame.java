@@ -80,11 +80,11 @@ public class PlayGame {
             return;  // invalid move, let user repeat
         }
         else {
-            ui.drawBoard(board);
+            ui.drawBoard(board);  // draw text version of board b4 move
             board.setBox(move);
             Board.Symbols symbol = board.getNextToPlay().getPlayerSymbol();
             ui.labelButton(row,column,symbol.name());
-            ui.drawBoard(board);
+            ui.drawBoard(board);  // draw text version after move
         }
                     // check if winner or draw
         if (board.isWinner (board.getNextToPlay().getPlayerSymbol())) {
@@ -104,7 +104,7 @@ public class PlayGame {
             System.out.println("Draw");
             ui.printUserMessage("It's a DRAW!");
         }
-        // no closing else
+        // no closing else - no winner, not a draw, keep playing
 
         // switch players & display next turn
         if (board.getNextToPlay() == player1)
