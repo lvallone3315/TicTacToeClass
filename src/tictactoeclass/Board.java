@@ -10,6 +10,7 @@ package tictactoeclass;
  *   Board class <br>
  *    Defines enum for X and O, regardless of actual text symbols used <br>
  *    keeps track of boxes played <br>
+ *    tracks player instance who plays next, but doesn't reference any player data <br>
  *    implements methods for resetting board, getting and setting box contents <br>
  *  <P>
  *  getBox (row, column)          returns contents of a box <br>
@@ -20,9 +21,9 @@ package tictactoeclass;
  *    assumes calling routine only asks about a specific player
  *  isMoveValid()        checks if row and column within range and box empty <br>
  *  getWinningBoxes()    returns boxes with winning line for display <br>
- *  getNextToPlay()      returns Player whose turn it is
+ *  getNextToPlay()      returns Player whose turn it is <br>
  *  setNextToPlay(Player) sets next player to play
- * 
+ * <P>
  * 4-October:  Clean-up
  *   added variables for gameOver and constants for board size
  *   isGameOver() - moved here (ie winner or 9 moves - ie draw)
@@ -131,7 +132,7 @@ public class Board {
      *   winArray[] updated with winning cells (each cell is a Move structure)
      * @return true if player won, false if not
      * 
-     * ToDo: refactor with more efficient checks &/or remove duplicate code
+     * ToDo: refactor with more efficient checks and/or remove duplicate code
      * ToDo: remove hardcoding of array size (winArray[])
      */
     public Boolean isWinner(Symbols symbol) {
@@ -222,6 +223,9 @@ public class Board {
     /**
      * 
      * @return  array[RC_SIZE] of winning boxes each of type Move
+     * Notes: <br>
+     *   Requires isWinner() to be called prior configure winning cells
+     *   ToDo: Clear winArray in resetBoard, currently not cleared
      */
     public Move[] getWinningBoxes() {
         saveFile.writeToSaveFile("Game Over");
@@ -230,6 +234,7 @@ public class Board {
     
     /**
      * setNextToPlay() - set which player plays next 
+     * @param player - will have next turn
      */
     public void setNextToPlay(Player player) {
         nextToPlay = player;
