@@ -24,6 +24,11 @@ public class PlayGame {
         private Player player2 = new Player(Board.Symbols.O);
         private Board board = new Board();
         
+        // testSleep - for auto testing, slowing game so board is visible
+        //    propose to only allow setting in constructor (for now)
+        //    zero is no delay
+        private int testSleep = 0;
+        
         // drop used for synchronized message passing from UI
         // initial version - take synchronization handler from main
         //   ToDo: embed message synch in PlayGame class & call as a forked thread
@@ -32,16 +37,22 @@ public class PlayGame {
         
 
 
-    PlayGame(Drop mainDropMessageSynch) {
+    PlayGame(Drop mainDropMessageSynch, int sleepValue) {
 
         drop = mainDropMessageSynch;
         board.setNextToPlay(player1);  // ToDo - option to configure starting player
+        
+        testSleep = sleepValue;
         
         // Initialize GUI, including button listeners
         // ToDo - overload constructor - accept argument specing no GUI
         ui = new TicTacToeUI(board, drop);
         ui.setButtonActionListener();
 
+    }
+    
+    PlayGame(Drop mainDropMessageSynch) {
+        this (mainDropMessageSynch, 0);
     }
     
     /**
@@ -117,6 +128,16 @@ public class PlayGame {
             ui.printUserMessage(board.getNextToPlay().getPlayerName() + " turn");
         }
         ui.setVisible(true);
+        
+        // if instance created with move delay, sleep for specified delay
+        
+        if (testSleep != 0) {
+            try {
+                Thread.sleep(testSleep);
+            } catch (InterruptedException ex) {
+                ;  // do nothing for now
+            }
+        }
     }
     
     // Following routines are for JUnit testing

@@ -35,7 +35,7 @@ public class TicTacToeClass {
      * Currently: no command line arguments
      */
     
-    static final String VERSION = "v0.4";
+    static final String VERSION = "v0.5";
     
     public static void main(String[] args) throws InterruptedException {
         
