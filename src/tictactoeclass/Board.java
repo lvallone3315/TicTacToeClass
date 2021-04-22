@@ -117,7 +117,7 @@ public class Board {
      *   probably only need == NUM_BOXES, but just in case .....
      */
     public Boolean isDraw() {
-        if ((moveCounter >= NUM_BOXES) && (gameOver == false))
+        if ((moveCounter > NUM_BOXES) && (gameOver == false))
             return true;
         else
             return false;

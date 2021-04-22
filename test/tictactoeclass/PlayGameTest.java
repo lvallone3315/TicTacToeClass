@@ -88,7 +88,7 @@ public class PlayGameTest {
     @Test
     public void playToWinXOnRow0() {
         System.out.println("***Testing: X to win on 1st row");
-        PlayGame play = new PlayGame(drop);
+        PlayGame play = new PlayGame(drop, 300);
         play.playGame(0,0);
         play.playGame(1,0);
         play.playGame(0,1);

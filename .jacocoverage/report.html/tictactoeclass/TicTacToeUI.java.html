@@ -1,0 +1,269 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="en"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../.resources/report.css" type="text/css"/><link rel="shortcut icon" href="../.resources/report.gif" type="image/gif"/><title>TicTacToeUI.java</title><link rel="stylesheet" href="../.resources/prettify.css" type="text/css"/><script type="text/javascript" src="../.resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../.sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">JaCoCoverage analysis of project &quot;TicTacToeClass&quot; (powered by JaCoCo from EclEmma)</a> &gt; <a href="index.source.html" class="el_package">tictactoeclass</a> &gt; <span class="el_source">TicTacToeUI.java</span></div><h1>TicTacToeUI.java</h1><pre class="source lang-java linenums">/*
+ * To change this license header, choose License Headers in Project Properties.
+ * To change this template file, choose Tools | Templates
+ * and open the template in the editor.
+ */
+package tictactoeclass;
+
+import java.awt.BorderLayout;
+import java.awt.Color;
+import java.awt.Dimension;
+import java.awt.Font;
+import java.awt.GridLayout;
+import java.awt.Panel;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
+import java.util.Random;
+import javax.swing.JButton;
+import javax.swing.JFrame;
+import javax.swing.JLabel;
+import tictactoeclass.Board.Symbols;
+
+
+/**
+ * TicTacToeUI class
+ *      Handles all interface with user
+ *   Constructor:
+ *     param board - instance of board class, already initialized
+ *     param dropInput - instance of message synchronizer, msg between threads
+ * &lt;P&gt;
+ *    sets up buttons including boxes and reset game &lt;br&gt;
+ *    sets up user message text area (win, loss, next to play, errors) &lt;br&gt;
+ *    initializes game board (board class) &lt;br&gt;
+ *    sets up listeners for user input &lt;br&gt;
+ * &lt;P&gt;
+ * Other methods &lt;br&gt;
+ *   resetGame - clears GUI entries, and resets board in board class &lt;br&gt;
+ * &lt;P&gt;
+ * ToDo &lt;br&gt;
+ *   Refactor board size to be variable
+ *   Refactor hard coded sizes
+ * &lt;P&gt;
+ * Old console methods &lt;br&gt;
+ *   drawBoard(Board)   draws board on console screen, retrieves values from Board &lt;br&gt;
+ *   getMove()          returns user move, row and column (automates moves) &lt;br&gt;
+ *
+ * @author leev
+ */
+public class TicTacToeUI extends JFrame implements ActionListener {
+    
+    final static int WINDOW_WIDTH = 500;  // window width in pixels
+    final static int WINDOW_HEIGHT = 700; // window height in pixels
+    final static int PANEL_WIDTH = WINDOW_WIDTH - 75;
+    final static int PANEL_HEIGHT = WINDOW_HEIGHT - 75;
+    
+<span class="fc" id="L55">    JButton[][] button = new JButton[3][3];</span>
+    JButton resetButton;
+<span class="fc" id="L57">    final String RESET_TEXT = &quot;New Game&quot;;</span>
+    
+    JLabel userMessage;
+    
+    private Drop drop;
+    Board guiBoard;
+    
+    // Constructor - see above Javadoc for details
+<span class="fc" id="L65">    TicTacToeUI(Board board, Drop dropInput) {</span>
+<span class="fc" id="L66">        guiBoard = board;</span>
+<span class="fc" id="L67">        this.drop = dropInput;</span>
+        
+<span class="fc" id="L69">        System.out.println(&quot;TicTacToeUI constructor&quot;);</span>
+            // declare &amp; initialize next to player to make a move
+        // guiBoard.setNextToPlay(guiPlayer1);
+        
+        /*
+         * JFrame uses Border layout
+         *   User message at top, tic tac toe board center, New game button bottom
+         *   note: components will resize automatically with this layout
+         * 
+         * Panels:
+         *   userMessagePanel - single line of text for status messages
+         *   boardPanel - Tic Tac Toe board
+         *   resetPanel - Reset button
+        */
+<span class="fc" id="L83">        JFrame window = new JFrame();</span>
+<span class="fc" id="L84">        window.setTitle(&quot;CSCI 3315 Tic Tac Toe &quot; + TicTacToeClass.getVersion());</span>
+<span class="fc" id="L85">        window.setSize(WINDOW_WIDTH, WINDOW_HEIGHT);</span>
+<span class="fc" id="L86">        window.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);</span>
+        
+        // status messages (top of frame) - player, win/loss/draw, invalid moves
+        //   ToDo - get rid of hardcoded sizes (e.g. panel height, font size)
+<span class="fc" id="L90">        Panel userMessagePanel = new Panel();</span>
+<span class="fc" id="L91">        userMessage = new JLabel(guiBoard.getNextToPlay().getPlayerName() + &quot; turn&quot;,JLabel.CENTER);</span>
+<span class="fc" id="L92">        userMessage.setSize(PANEL_WIDTH,100);</span>
+<span class="fc" id="L93">        userMessage.setFont(new Font(&quot;Arial&quot;, Font.ITALIC, 20));</span>
+<span class="fc" id="L94">        userMessage.setHorizontalAlignment(JLabel.CENTER);</span>
+<span class="fc" id="L95">        userMessagePanel.add(userMessage);</span>
+        
+        // Tic Tac Toe board w/ a 3x3 grid of buttons
+<span class="fc" id="L98">        Panel boardPanel = new Panel();</span>
+<span class="fc" id="L99">        boardPanel.setLayout(new GridLayout(3,3));</span>
+
+<span class="fc bfc" id="L101" title="All 2 branches covered.">        for (int row = 0; row &lt; 3; row++) {</span>
+<span class="fc bfc" id="L102" title="All 2 branches covered.">            for (int column = 0; column &lt; 3; column++) {</span>
+<span class="fc" id="L103">                button[row][column] = new JButton(&quot;    &quot;);</span>
+<span class="fc" id="L104">                button[row][column].setPreferredSize(new Dimension(100, 100));</span>
+<span class="fc" id="L105">                button[row][column].setFont(new Font(&quot;Arial&quot;, Font.BOLD, 40));</span>
+<span class="fc" id="L106">                boardPanel.add(button[row][column]);</span>
+            }
+        }
+        
+
+        // Reset button panel
+<span class="fc" id="L112">        resetButton = new JButton(RESET_TEXT);</span>
+<span class="fc" id="L113">        resetButton.setPreferredSize(new Dimension(150, 50));</span>
+<span class="fc" id="L114">        Panel resetPanel = new Panel();</span>
+<span class="fc" id="L115">        resetPanel.add(resetButton);</span>
+<span class="fc" id="L116">        resetPanel.add(resetButton);</span>
+        
+        // Configure Jframe layout, add panels &amp; make window visible
+<span class="fc" id="L119">        window.setLayout(new BorderLayout());</span>
+<span class="fc" id="L120">        window.add(userMessagePanel, BorderLayout.PAGE_START);</span>
+<span class="fc" id="L121">        window.add(boardPanel, BorderLayout.CENTER);</span>
+<span class="fc" id="L122">        window.add(resetPanel, BorderLayout.PAGE_END);</span>
+
+<span class="fc" id="L124">        window.setVisible(true);</span>
+        
+        // reset &amp; draw board
+<span class="fc" id="L127">        guiBoard.resetBoard();</span>
+<span class="fc" id="L128">    };</span>
+    
+    public void setButtonActionListener() {
+                //set action listeners for buttons
+<span class="fc bfc" id="L132" title="All 2 branches covered.">        for (int row = 0; row &lt; 3; row++) {</span>
+<span class="fc bfc" id="L133" title="All 2 branches covered.">            for (int column = 0; column &lt; 3; column++) {</span>
+<span class="fc" id="L134">                button[row][column].addActionListener(this);</span>
+            }
+        }
+<span class="fc" id="L137">        resetButton.addActionListener(this);</span>
+<span class="fc" id="L138">    }</span>
+    
+    /**
+     * labelButton() label button with string
+     * @param row - button row
+     * @param col - button column
+     * @param text - string for button label
+     *   color - [optional] JSwing text color (default Color.black)
+     */
+    public void labelButton(int row, int col, String text) {
+<span class="fc" id="L148">        labelButton(row, col, text, Color.black);</span>
+<span class="fc" id="L149">    }</span>
+    
+    public void labelButton(int row, int col, String text, Color color) {
+<span class="fc" id="L152">        button[row][col].setText(text);</span>
+<span class="fc" id="L153">        button[row][col].setForeground(color);</span>
+<span class="fc" id="L154">    }</span>
+    // don't change label, just the color
+    public void labelButton(int row, int col, Color color) {
+<span class="fc" id="L157">        button[row][col].setForeground(color);</span>
+<span class="fc" id="L158">    }</span>
+    /** 
+     * resetGame &lt;br&gt;
+     *   called when new game requested &lt;br&gt;
+     *    clears all button contents (ie TicTacToe boxes) &lt;br&gt;
+     *    resets board in board class including move counter &lt;br&gt;
+     */
+    public void resetGame () {
+        
+        // Reset buttons &amp; user message
+<span class="fc bfc" id="L168" title="All 2 branches covered.">        for (int row = 0; row &lt; 3; row++) {</span>
+<span class="fc bfc" id="L169" title="All 2 branches covered.">            for (int column = 0; column &lt; 3; column++) {</span>
+<span class="fc" id="L170">                labelButton(row, column, &quot; &quot;, Color.black);</span>
+            }
+        }
+<span class="fc" id="L173">        userMessage.setText (guiBoard.getNextToPlay().getPlayerName() + &quot; turn&quot;);</span>
+        // Reset board &amp; moves
+        //   assumes Next to Play is already set
+<span class="fc" id="L176">        guiBoard.resetBoard();</span>
+<span class="fc" id="L177">    }</span>
+
+    /**
+     * Error message handlers &lt;br&gt;
+     *  printUserError currently only goes to console &lt;br&gt;
+     *  printUserMessage only goes to user window (userMessage area) &lt;br&gt;
+     * @param userError - string to print on console
+    */
+    public void printUserError (String userError) {
+<span class="nc" id="L186">        System.out.println(&quot;USER ERROR: &quot; + userError);</span>
+<span class="nc" id="L187">    }</span>
+    
+    public void printUserMessage (String message) {
+<span class="fc" id="L190">        userMessage.setText(message);</span>
+<span class="fc" id="L191">        setVisible(true);</span>
+<span class="fc" id="L192">    }</span>
+
+    /**
+     * process button click &lt;br&gt;
+     * two types &lt;br&gt;
+     *   reset button - calls reset game method &lt;br&gt;
+     *   TicTacToe button - calls playGame to process &lt;br&gt;
+    */
+    @Override
+    public void actionPerformed(ActionEvent e) {
+<span class="nc" id="L202">        final int INVALID = 99;</span>
+        
+<span class="nc bnc" id="L204" title="All 2 branches missed.">        if (e.getSource() instanceof JButton) {</span>
+<span class="nc bnc" id="L205" title="All 2 branches missed.">            if (e.getSource()==resetButton) {</span>
+<span class="nc" id="L206">                System.out.println(&quot;Reset Button clicked&quot;);  // reset game</span>
+<span class="nc" id="L207">                resetGame();</span>
+            }
+            else {
+                // Assume Tic Tac Toe button pushed, identify which button
+<span class="nc" id="L211">                int buttonRow = INVALID;</span>
+<span class="nc" id="L212">                int buttonColumn = INVALID;</span>
+                
+<span class="nc bnc" id="L214" title="All 2 branches missed.">                for (int row = 0; row &lt; 3; row++) {</span>
+<span class="nc bnc" id="L215" title="All 2 branches missed.">                    for (int column = 0; column &lt; 3; column++) {</span>
+<span class="nc bnc" id="L216" title="All 2 branches missed.">                        if (e.getSource() == button[row][column]) {</span>
+<span class="nc" id="L217">                            buttonRow = row;</span>
+<span class="nc" id="L218">                            buttonColumn = column;</span>
+                        }
+                    }
+                }
+                
+                // playGame() currently used to play button push           
+                // drop is prototype for dual thread synchronization
+                // ToDo: note - 2nd Move instance created for thread proto
+
+<span class="nc bnc" id="L227" title="All 2 branches missed.">                if (buttonRow != INVALID) {</span>
+<span class="nc" id="L228">                    drop.put(new Move(buttonRow, buttonColumn));</span>
+                    try {
+<span class="nc" id="L230">                        Thread.sleep(100);</span>
+<span class="nc" id="L231">                    } catch (InterruptedException ev) {}</span>
+                }
+                else {
+<span class="nc" id="L234">                    System.err.println(&quot;INVALID ACTION EVENET&quot;);</span>
+                }
+            }
+        }
+<span class="nc" id="L238">    }</span>
+    
+    
+    /**
+     * methods below used for console text version of the game
+     *   drawboard draws a text version of board on console
+     *   getMove creates a random move and returns it to caller
+     * @param board - pointer to board instance to draw
+    */
+    public void drawBoard(Board board) {
+<span class="fc bfc" id="L248" title="All 2 branches covered.">        for (int row = 0; row &lt; 3; row++){</span>
+<span class="fc bfc" id="L249" title="All 2 branches covered.">            for (int column = 0; column &lt; 3; column++) {</span>
+<span class="fc" id="L250">                System.out.print(board.getBox(row, column)+&quot; &quot;);</span>
+            }
+<span class="fc" id="L252">            System.out.println();</span>
+        }
+<span class="fc" id="L254">        System.out.println();</span>
+<span class="fc" id="L255">    }</span>
+    
+    /**
+     * Get a random move - currently not used
+     * @return a randomly generated move
+     */
+    public Move getMove() {
+<span class="nc" id="L262">        Random rand = new Random(); </span>
+<span class="nc" id="L263">        int row = rand.nextInt(3); </span>
+<span class="nc" id="L264">        int column = rand.nextInt(3); </span>
+<span class="nc" id="L265">        Move move = new Move(row,column);</span>
+<span class="nc" id="L266">        return move;</span>
+    }
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.eclemma.org/jacoco">JaCoCo</a> 0.7.6.201602180812</span></div></body></html>
