@@ -114,7 +114,6 @@ public class Board {
      * @return true if draw
      *   Note: gameOver variable tracks if a win (not a draw, so should rename)
      *   draw = all boxes filled and gameOver = false
-     *   probably only need == NUM_BOXES, but just in case .....
      */
     public Boolean isDraw() {
         if ((moveCounter > NUM_BOXES) && (gameOver == false))
