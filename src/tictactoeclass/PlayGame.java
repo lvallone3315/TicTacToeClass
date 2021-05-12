@@ -35,6 +35,13 @@ public class PlayGame {
         private Drop drop; 
         private TicTacToeUI ui;
         
+        // junit testing, JTEST = instance to be created in test file
+        // set JTEST to null to turn off auto test case generation
+        FileSave junitFilePtr;
+        String JTEST = "test";
+        String JUNIT_TEST_FILENAME = "JunitFile.txt";
+
+        
 
 
     PlayGame(Drop mainDropMessageSynch, int sleepValue) {
@@ -48,6 +55,22 @@ public class PlayGame {
         // ToDo - overload constructor - accept argument specing no GUI
         ui = new TicTacToeUI(board, drop);
         ui.setButtonActionListener();
+        
+        //         Save moves & outcomes for replaying in a JUnit test file
+        // 
+        // When starting a game, explicitly set next to play
+        // ToDo: additional tests, unique file names(e.g. use process ID)
+        if (JTEST != null) {
+            junitFilePtr = new FileSave(JUNIT_TEST_FILENAME);
+            junitFilePtr.writeToSaveFile("// Initialization per test file\n");
+            junitFilePtr.writeToSaveFile("Drop drop = new Drop();\n");
+            junitFilePtr.writeToSaveFile("PlayGame " + JTEST + ";\n\n");
+            junitFilePtr.writeToSaveFile("// Initialization per test case\n");
+            junitFilePtr.writeToSaveFile(JTEST + " = new PlayGame(drop, 500);\n\n");
+ 
+            junitFilePtr.writeToSaveFile(JTEST+".setNextToPlay(\""+
+                    board.getNextToPlay().getPlayerSymbol().name()+"\");\n");
+        }
 
     }
     
@@ -76,21 +99,33 @@ public class PlayGame {
     
     
     public void playGame(int row, int column) {
+  
         if (board.isGameOver()) {
             return;  // game over, do not process
         }
+        // log move for Junit, but MUST be after game over check
+        // junit saving logic immediately resets game after a win/loss/draw
+        // hence moves after game over would be attributed to next game in junit tests
+        if (JTEST != null) {  // if capturing for junit test, save move
+            junitFilePtr.writeToSaveFile(JTEST+".playGame(" + row + "," + column + ");\n");
+        }
+        
         Move move = new Move(row,column,board.getNextToPlay().getPlayerSymbol());
         // print move to console
         move.printMove();
         
-        // if invalid move - print to both console GUI
+        // if invalid move - print to both console & GUI
         if (!board.isMoveValid(move)) {
+            if (JTEST != null) {
+                junitFilePtr.writeToSaveFile("// Invalid Move - ignored" +
+                        board.getNextToPlay().getPlayerName() + " to play\n");
+            }
             ui.printUserError("Invalid move");
             ui.printUserMessage("Invalid move" + 
                     board.getNextToPlay().getPlayerName());
             return;  // invalid move, let user repeat
         }
-        else {
+        else {  // valid move
             ui.drawBoard(board);  // draw text version of board b4 move
             board.setBox(move);
             Board.Symbols symbol = board.getNextToPlay().getPlayerSymbol();
@@ -99,6 +134,14 @@ public class PlayGame {
         }
                     // check if winner or draw
         if (board.isWinner (board.getNextToPlay().getPlayerSymbol())) {
+            if (JTEST != null) {
+                String winSymbolString = board.getNextToPlay().getPlayerSymbol().name();
+                junitFilePtr.writeToSaveFile("assertTrue("+JTEST+".isWinner(\""+
+                       winSymbolString + "\"));\n");
+                junitFilePtr.writeToSaveFile(JTEST+".resetBoard();\n");
+                junitFilePtr.writeToSaveFile("// Above test case = win by " + 
+                       winSymbolString + "\n\n");
+            }
             System.out.println("Winner: " + board.getNextToPlay().getPlayerName());
             ui.printUserMessage("WINNER!: " + board.getNextToPlay().getPlayerName());
             
@@ -112,6 +155,11 @@ public class PlayGame {
             
         }
         else if (board.isDraw()) {
+            if (JTEST != null) {
+                junitFilePtr.writeToSaveFile("assertTrue("+JTEST+".isDraw());\n");
+                junitFilePtr.writeToSaveFile(JTEST+".resetBoard();\n");
+                junitFilePtr.writeToSaveFile("// Above test case = draw\n\n");
+            }
             System.out.println("Draw");
             ui.printUserMessage("It's a DRAW!");
         }
@@ -152,6 +200,21 @@ public class PlayGame {
         return (board.isWinner (symbol));
     }
     
+    public Boolean isWinner(String symbolString) {
+        tictactoeclass.Board.Symbols symbol;
+
+        if (symbolString.equalsIgnoreCase(player1.getPlayerSymbol().name()))
+            symbol = player1.getPlayerSymbol();
+        else if (symbolString.equalsIgnoreCase(player2.getPlayerSymbol().name()))
+            symbol = player2.getPlayerSymbol();
+        else {
+            System.out.println("Invalid symbol to isWinner()" + symbolString);
+            return false;
+        }
+        System.out.println("**CHECKING WIN - isWinner(" + symbolString + ") - returned " + board.isWinner(symbol));
+        return (board.isWinner (symbol));
+    }
+    
     /**
      * For Junit testing - true if game is a draw
      * @return - true if game ended as a draw, otherwise false
@@ -166,5 +229,17 @@ public class PlayGame {
      */
     public void resetBoard() {
         ui.resetGame();
+    }
+    
+   /**
+     * For Junit testing - set player who goes first <br>
+     */
+    public void setNextToPlay(String symbol) {
+        if (symbol.equalsIgnoreCase(player1.getPlayerSymbol().name()))
+                board.setNextToPlay(player1);
+        else if (symbol.equalsIgnoreCase(player2.getPlayerSymbol().name()))
+                board.setNextToPlay(player2);
+        else
+            System.out.println("Invalid symbol to set NexToPlay()" + symbol);
     }
 }
