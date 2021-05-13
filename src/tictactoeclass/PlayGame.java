@@ -37,9 +37,10 @@ public class PlayGame {
         
         // junit testing, JTEST = instance to be created in test file
         // set JTEST to null to turn off auto test case generation
-        FileSave junitFilePtr;
-        String JTEST = "test";
-        String JUNIT_TEST_FILENAME = "JunitFile.txt";
+        private FileSave junitFilePtr;
+        private final String JTEST = "newTest";
+        private final String JUNIT_TEST_FILENAME = "JunitFile.txt";
+        private enum junitScenarios {INIT, MOVE, DRAW, WIN, INVALID};
 
         
 
@@ -60,18 +61,7 @@ public class PlayGame {
         // 
         // When starting a game, explicitly set next to play
         // ToDo: additional tests, unique file names(e.g. use process ID)
-        if (JTEST != null) {
-            junitFilePtr = new FileSave(JUNIT_TEST_FILENAME);
-            junitFilePtr.writeToSaveFile("// Initialization per test file\n");
-            junitFilePtr.writeToSaveFile("Drop drop = new Drop();\n");
-            junitFilePtr.writeToSaveFile("PlayGame " + JTEST + ";\n\n");
-            junitFilePtr.writeToSaveFile("// Initialization per test case\n");
-            junitFilePtr.writeToSaveFile(JTEST + " = new PlayGame(drop, 500);\n\n");
- 
-            junitFilePtr.writeToSaveFile(JTEST+".setNextToPlay(\""+
-                    board.getNextToPlay().getPlayerSymbol().name()+"\");\n");
-        }
-
+        if (JTEST != null) junitAutoTestGen(junitScenarios.INIT);
     }
     
     PlayGame(Drop mainDropMessageSynch) {
@@ -106,8 +96,8 @@ public class PlayGame {
         // log move for Junit, but MUST be after game over check
         // junit saving logic immediately resets game after a win/loss/draw
         // hence moves after game over would be attributed to next game in junit tests
-        if (JTEST != null) {  // if capturing for junit test, save move
-            junitFilePtr.writeToSaveFile(JTEST+".playGame(" + row + "," + column + ");\n");
+        if (JTEST != null) {
+            junitAutoTestGen(junitScenarios.MOVE, row, column); // does nothing at the moment
         }
         
         Move move = new Move(row,column,board.getNextToPlay().getPlayerSymbol());
@@ -116,10 +106,7 @@ public class PlayGame {
         
         // if invalid move - print to both console & GUI
         if (!board.isMoveValid(move)) {
-            if (JTEST != null) {
-                junitFilePtr.writeToSaveFile("// Invalid Move - ignored" +
-                        board.getNextToPlay().getPlayerName() + " to play\n");
-            }
+            if (JTEST != null) junitAutoTestGen(junitScenarios.INVALID);
             ui.printUserError("Invalid move");
             ui.printUserMessage("Invalid move" + 
                     board.getNextToPlay().getPlayerName());
@@ -134,14 +121,8 @@ public class PlayGame {
         }
                     // check if winner or draw
         if (board.isWinner (board.getNextToPlay().getPlayerSymbol())) {
-            if (JTEST != null) {
-                String winSymbolString = board.getNextToPlay().getPlayerSymbol().name();
-                junitFilePtr.writeToSaveFile("assertTrue("+JTEST+".isWinner(\""+
-                       winSymbolString + "\"));\n");
-                junitFilePtr.writeToSaveFile(JTEST+".resetBoard();\n");
-                junitFilePtr.writeToSaveFile("// Above test case = win by " + 
-                       winSymbolString + "\n\n");
-            }
+            if (JTEST != null) junitAutoTestGen(junitScenarios.WIN);
+
             System.out.println("Winner: " + board.getNextToPlay().getPlayerName());
             ui.printUserMessage("WINNER!: " + board.getNextToPlay().getPlayerName());
             
@@ -155,11 +136,7 @@ public class PlayGame {
             
         }
         else if (board.isDraw()) {
-            if (JTEST != null) {
-                junitFilePtr.writeToSaveFile("assertTrue("+JTEST+".isDraw());\n");
-                junitFilePtr.writeToSaveFile(JTEST+".resetBoard();\n");
-                junitFilePtr.writeToSaveFile("// Above test case = draw\n\n");
-            }
+            if (JTEST != null) junitAutoTestGen(junitScenarios.DRAW);
             System.out.println("Draw");
             ui.printUserMessage("It's a DRAW!");
         }
@@ -241,5 +218,54 @@ public class PlayGame {
                 board.setNextToPlay(player2);
         else
             System.out.println("Invalid symbol to set NexToPlay()" + symbol);
+    }
+    
+    /**
+     * Helper function to improve playGame() readability
+     * @args enum for different test actions & outcomes
+    */
+    private void junitAutoTestGen(junitScenarios scenario) {
+            junitAutoTestGen(scenario, 0,0);
+    }
+    private void junitAutoTestGen(junitScenarios scenario, int r, int c) {
+        // INIT, MOVE, DRAW, WIN, INVALID
+        String symbolString;
+        switch (scenario) {
+            case INIT:
+                junitFilePtr = new FileSave(JUNIT_TEST_FILENAME);
+                junitFilePtr.writeToSaveFile("// Initialization per test file\n");
+                junitFilePtr.writeToSaveFile("Drop drop = new Drop();\n");
+                junitFilePtr.writeToSaveFile("PlayGame " + JTEST + ";\n\n");
+                junitFilePtr.writeToSaveFile("// Initialization per test case\n");
+                junitFilePtr.writeToSaveFile(JTEST + " = new PlayGame(drop, 500);\n\n");
+
+                junitFilePtr.writeToSaveFile(JTEST+".setNextToPlay(\""+
+                    board.getNextToPlay().getPlayerSymbol().name()+"\");\n");
+                break;
+            case MOVE: {
+                junitFilePtr.writeToSaveFile(JTEST+".playGame(" + r + "," + c + ");\n");
+                break;
+            }
+            case WIN: {
+                symbolString = board.getNextToPlay().getPlayerSymbol().name();
+                junitFilePtr.writeToSaveFile("assertTrue("+JTEST+".isWinner(\""+
+                       symbolString + "\"));\n");
+                junitFilePtr.writeToSaveFile(JTEST+".resetBoard();\n");
+                junitFilePtr.writeToSaveFile("// Above test case = win by " + 
+                       symbolString + "\n\n");
+                break;
+            }
+            case DRAW: {
+                junitFilePtr.writeToSaveFile("assertTrue("+JTEST+".isDraw());\n");
+                junitFilePtr.writeToSaveFile(JTEST+".resetBoard();\n");
+                junitFilePtr.writeToSaveFile("// Above test case = draw\n\n");
+                break;
+            }
+            case INVALID: {
+                junitFilePtr.writeToSaveFile("// Invalid Move - ignored" +
+                        board.getNextToPlay().getPlayerName() + " to play\n");
+                break;
+            }
+        }
     }
 }
