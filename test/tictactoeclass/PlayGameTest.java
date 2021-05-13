@@ -100,6 +100,21 @@ public class PlayGameTest {
         assertEquals(play.isWinner(Board.Symbols.O), false);
     }
     
+    @Test
+    public void playToDraw() {
+        PlayGame play = new PlayGame(drop, 500);
+        play.playGame(0,0);
+        play.playGame(1,0);
+        play.playGame(0,1);
+        play.playGame(0,2);
+        play.playGame(1,1);
+        play.playGame(2,2);
+        play.playGame(1,2);
+        play.playGame(2,1);
+        play.playGame(2,0);
+        assertTrue(play.isDraw());
+    }
+    
     /**
      * Test of playGame method, of class PlayGame.
      * Test case designed to test InterProcess Communication (drop.take)
