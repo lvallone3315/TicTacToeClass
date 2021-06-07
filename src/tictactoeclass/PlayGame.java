@@ -97,7 +97,7 @@ public class PlayGame {
         // junit saving logic immediately resets game after a win/loss/draw
         // hence moves after game over would be attributed to next game in junit tests
         if (JTEST != null) {
-            junitAutoTestGen(junitScenarios.MOVE, row, column); // does nothing at the moment
+            junitAutoTestGen(junitScenarios.MOVE, row, column);
         }
         
         Move move = new Move(row,column,board.getNextToPlay().getPlayerSymbol());

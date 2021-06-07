@@ -92,8 +92,8 @@ public class MorePlayGameTests {
         // Above test case = draw
 
         test.playGame(2,1);
-        test.playGame(2,1);
         test.resetBoard();
+        
 
         test.playGame(2,0);
         test.playGame(2,1);

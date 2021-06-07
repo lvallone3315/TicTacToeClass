@@ -13,6 +13,7 @@ import java.awt.GridLayout;
 import java.awt.Panel;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import static java.lang.Math.random;
 import java.util.Random;
 import javax.swing.JButton;
 import javax.swing.JFrame;
@@ -81,6 +82,11 @@ public class TicTacToeUI extends JFrame implements ActionListener {
          *   resetPanel - Reset button
         */
         JFrame window = new JFrame();
+        // randomize window on screen - so if playing multiple games, can see all
+        Random rand = new Random();
+        int randomLocationXY = rand.nextInt(300);
+        window.setLocation(randomLocationXY,randomLocationXY);
+        
         window.setTitle("CSCI 3315 Tic Tac Toe " + TicTacToeClass.getVersion());
         window.setSize(WINDOW_WIDTH, WINDOW_HEIGHT);
         window.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
